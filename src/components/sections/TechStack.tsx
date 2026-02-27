@@ -2,7 +2,6 @@
 
 import { useRef, useState, useMemo } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useInView } from "framer-motion";
 import * as THREE from "three";
 import { Html, Float, PerspectiveCamera, Stars } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette, ChromaticAberration } from "@react-three/postprocessing";
@@ -207,7 +206,6 @@ function TechContent() {
 
 export default function TechStack() {
     const containerRef = useRef<HTMLDivElement>(null);
-    const isInView = useInView(containerRef, { margin: "200px" });
 
     return (
         <section ref={containerRef} className="py-16 relative z-10 w-full overflow-hidden bg-void" id="tech">
@@ -228,14 +226,12 @@ export default function TechStack() {
             </div>
 
             <div className="w-full h-[750px] relative z-10 cursor-crosshair">
-                {isInView && (
-                    <Canvas
-                        dpr={1}
-                        gl={{ antialias: false, powerPreference: "high-performance", alpha: true }}
-                    >
-                        <TechContent />
-                    </Canvas>
-                )}
+                <Canvas
+                    dpr={1}
+                    gl={{ antialias: false, powerPreference: "high-performance", alpha: true }}
+                >
+                    <TechContent />
+                </Canvas>
             </div>
 
             <div className="max-w-[1000px] mx-auto mt-20 text-center px-4 relative z-20">

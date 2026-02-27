@@ -44,8 +44,8 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
 
     // A simple Markdown component mapper for beautiful typography without complex libraries
     const MarkdownComponents = {
-        h2: ({ node, ...props }: any) => <h2 className="font-syne font-bold text-3xl text-white mt-12 mb-6" {...props} />,
-        h3: ({ node, ...props }: any) => <h3 className="font-syne font-semibold text-2xl text-pulse-cyan mt-10 mb-4" {...props} />,
+        h2: ({ node, ...props }: any) => <h2 className="font-syne font-bold text-2xl md:text-3xl text-white mt-12 mb-6" {...props} />,
+        h3: ({ node, ...props }: any) => <h3 className="font-syne font-semibold text-xl md:text-2xl text-pulse-cyan mt-10 mb-4" {...props} />,
         p: ({ node, ...props }: any) => <p className="font-sans text-lg text-text-secondary leading-relaxed mb-6" {...props} />,
         strong: ({ node, ...props }: any) => <strong className="font-bold text-white" {...props} />
     };
@@ -68,7 +68,7 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
                     <div className="absolute inset-0 bg-gradient-to-t from-void via-void/80 to-transparent" />
                 </div>
 
-                <div className="relative z-10 max-w-[900px] mx-auto h-full flex flex-col justify-end pb-16 px-6">
+                <div className="relative z-10 max-w-[900px] mx-auto h-full flex flex-col justify-end pt-[140px] pb-16 px-6">
                     <div className="flex flex-wrap items-center gap-4 text-pulse-cyan font-mono text-[12px] uppercase tracking-widest mb-6">
                         <span className="bg-pulse-cyan/10 px-4 py-2 rounded-full border border-pulse-cyan/30 backdrop-blur-md">
                             {post.category}
@@ -78,7 +78,7 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
                         <span className="text-white/40">•</span>
                         <span>{post.readTime}</span>
                     </div>
-                    <h1 className="font-syne font-extrabold text-display text-white mb-6 leading-tight max-w-[800px]">
+                    <h1 className="font-syne font-extrabold text-h1 text-white mb-6 leading-tight max-w-[800px]">
                         {post.title}
                     </h1>
                 </div>

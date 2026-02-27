@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.DS_Store
+data/
+PLAN.md
+TEAM_PROMPT.md
+CLAUDE.md
+.claude
+.playwright-mcp/
+test-results/
+test-screenshots/
+*.mov
+*.png
+!static/screenshot-dashboard.png
+!static/screenshot-detail.png
+docs/

@@ -1,0 +1,112 @@
+[package]
+name = "vestige-core"
+version = "2.0.0"
+edition = "2024"
+rust-version = "1.85"
+authors = ["Vestige Team"]
+description = "Cognitive memory engine - FSRS-6 spaced repetition, semantic embeddings, and temporal memory"
+license = "AGPL-3.0-only"
+repository = "https://github.com/samvallad33/vestige"
+keywords = ["memory", "spaced-repetition", "fsrs", "embeddings", "knowledge-graph"]
+categories = ["science", "database"]
+
+[features]
+default = ["embeddings", "vector-search", "bundled-sqlite"]
+
+# SQLite backend (default, unencrypted)
+bundled-sqlite = ["rusqlite/bundled"]
+
+# Encrypted SQLite via SQLCipher (mutually exclusive with bundled-sqlite)
+# Use: --no-default-features --features encryption,embeddings,vector-search
+# Set VESTIGE_ENCRYPTION_KEY env var to enable encryption
+encryption = ["rusqlite/bundled-sqlcipher"]
+
+# Core embeddings with fastembed (ONNX-based, local inference)
+embeddings = ["dep:fastembed"]
+
+# HNSW vector search with USearch (20x faster than FAISS)
+vector-search = ["dep:usearch"]
+
+# Nomic Embed Text v2 MoE (475M params, 305M active, Candle backend)
+# Requires: fastembed with nomic-v2-moe feature
+nomic-v2 = ["embeddings", "fastembed/nomic-v2-moe"]
+
+# Qwen3 Reranker (Candle backend, high-precision cross-encoder)
+qwen3-reranker = ["embeddings", "fastembed/qwen3"]
+
+# Metal GPU acceleration on Apple Silicon (significantly faster inference)
+metal = ["fastembed/metal"]
+
+# Full feature set including MCP protocol support
+full = ["embeddings", "vector-search"]
+
+# MCP (Model Context Protocol) support for Claude integration
+mcp = []
+
+[dependencies]
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Date/Time with full timezone support
+chrono = { version = "0.4", features = ["serde"] }
+
+# UUID v4 generation
+uuid = { version = "1", features = ["v4", "serde"] }
+
+# Error handling
+thiserror = "2"
+
+# Database - SQLite with FTS5 full-text search and JSON
+# Note: "bundled" or "bundled-sqlcipher" added via feature flags above
+rusqlite = { version = "0.38", features = ["chrono", "serde_json"] }
+
+# Platform-specific directories
+directories = "6"
+
+# Async runtime (required for codebase module)
+tokio = { version = "1", features = ["sync", "rt-multi-thread", "macros"] }
+
+# Tracing for structured logging
+tracing = "0.1"
+
+# Git integration for codebase memory
+# vendored-openssl: Compile OpenSSL from source for cross-compilation support
+git2 = { version = "0.20", features = ["vendored-openssl"] }
+
+# File watching for codebase memory
+notify = "8"
+
+# ============================================================================
+# OPTIONAL: Embeddings (fastembed v5 - local ONNX inference, 2026 bleeding edge)
+# ============================================================================
+# nomic-embed-text-v1.5: 768 dimensions, 8192 token context, Matryoshka support
+# v5.11: Adds Nomic v2 MoE (nomic-v2-moe feature) + Qwen3 reranker (qwen3 feature)
+fastembed = { version = "5.11", optional = true }
+
+# ============================================================================
+# OPTIONAL: Vector Search (USearch - HNSW, 20x faster than FAISS)
+# ============================================================================
+usearch = { version = "2", optional = true }
+
+# LRU cache for query embeddings
+lru = "0.16"
+
+[dev-dependencies]
+tempfile = "3"
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[[bench]]
+name = "search_bench"
+harness = false
+
+[lib]
+name = "vestige_core"
+path = "src/lib.rs"
+
+# Enable doctests
+doctest = true
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

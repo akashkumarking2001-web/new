@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useScroll, motion, useTransform } from "framer-motion";
+import { useScroll, motion, useTransform, AnimatePresence } from "framer-motion";
 import { Globe, DeviceMobile, Stack, TrendUp, List } from "@phosphor-icons/react";
 
 import Image from "next/image";
@@ -14,7 +14,7 @@ function Logo() {
                 <img
                     src="/AxoSoul.png"
                     alt="AxoSoul Logo"
-                    className="h-[60px] md:h-[80px] lg:h-[100px] w-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                    className="h-[80px] md:h-[100px] lg:h-[120px] w-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
                 />
             </div>
         </div>
@@ -25,6 +25,7 @@ export default function Navigation() {
     const { scrollY } = useScroll();
     const [scrolled, setScrolled] = useState(false);
     const [servicesOpen, setServicesOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     useEffect(() => {
         return scrollY.on("change", (latest) => {
@@ -85,10 +86,49 @@ export default function Navigation() {
                 </div>
 
                 {/* Mobile Menu */}
-                <button className="lg:hidden text-white" aria-label="Menu">
+                <button
+                    className="lg:hidden text-white relative z-50 p-2"
+                    aria-label="Menu"
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                >
                     <List size={28} />
                 </button>
             </div>
+
+            {/* Mobile Nav Overlay */}
+            <AnimatePresence>
+                {mobileMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="absolute top-full left-0 w-full glass-3 border-t border-white/10 lg:hidden flex flex-col p-6 gap-6 shadow-2xl"
+                    >
+                        <Link href="/" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">Home</Link>
+                        <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">About Us</Link>
+                        <Link href="/portfolio" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">Portfolio</Link>
+                        <Link href="/blog" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">Blog</Link>
+                        <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">Contact</Link>
+
+                        <div className="pt-4 border-t border-white/10 w-full">
+                            <h4 className="text-white/70 text-sm font-semibold mb-4 uppercase tracking-wider">Services</h4>
+                            <div className="grid grid-cols-2 gap-4">
+                                <Link href="#" onClick={() => setMobileMenuOpen(false)} className="text-white text-sm hover:text-pulse-cyan">Web Development</Link>
+                                <Link href="#" onClick={() => setMobileMenuOpen(false)} className="text-white text-sm hover:text-pulse-violet">Mobile Apps</Link>
+                                <Link href="#" onClick={() => setMobileMenuOpen(false)} className="text-white text-sm hover:text-pulse-orange">UI/UX Design</Link>
+                                <Link href="#" onClick={() => setMobileMenuOpen(false)} className="text-white text-sm hover:text-pulse-blue">Digital Marketing</Link>
+                            </div>
+                        </div>
+                        <Link
+                            href="/contact"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="mt-2 gradient-border px-6 py-3 text-center text-sm font-sans font-medium text-white rounded-[20px]"
+                        >
+                            Get a Free Quote
+                        </Link>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Services Mega Dropdown */}
             <motion.div

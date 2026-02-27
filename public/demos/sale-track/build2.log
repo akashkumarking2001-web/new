@@ -1,0 +1,9 @@
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+file:///D:/new%205/public/demos/sale-track/node_modules/vite/dist/node/chunks/config.js:23919
+										if (!resolved) return Promise.reject(/* @__PURE__ */ new Error(`Failed to resolve ${url$3} from ${id}`));
+										                                                     ^
+
+Error: Failed to resolve /demos/sale-track/assets/index-28R6Nwkw.js from D:/new 5/public/demos/sale-track/index.html
+    at file:///D:/new%205/public/demos/sale-track/node_modules/vite/dist/node/chunks/config.js:23919:64
+
+Node.js v24.12.0

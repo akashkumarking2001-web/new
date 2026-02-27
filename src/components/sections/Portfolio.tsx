@@ -67,34 +67,22 @@ function ScrollRow({ items, speed = 1, reverse = false }: { items: any[], speed?
     );
 
     return (
-        <div className="relative z-30 w-full mb-16">
-            {/* Desktop Scrolling Row */}
-            <div className="hidden md:flex overflow-hidden pb-8 px-[max(24px,calc((100vw-1440px)/2+24px))] cursor-grab active:cursor-grabbing w-full">
+        <div className="relative z-30 w-full mb-12 sm:mb-16">
+            {/* Unified Scrolling Row for Desktop & Mobile */}
+            <div className="flex overflow-hidden pb-4 sm:pb-8 px-[max(16px,4vw)] cursor-grab active:cursor-grabbing w-full">
                 <div
-                    className={`flex gap-8 w-max ${animClass}`}
+                    className={`flex gap-4 sm:gap-8 w-max ${animClass}`}
                     style={{ '--duration': `${duration}s` } as any}
                 >
                     {displayItems.map((demo, i) => (
                         <div
                             key={i}
-                            className="glass-1 p-6 rounded-[32px] relative group overflow-hidden border border-white/10 shrink-0 md:w-[45vw] lg:w-[28vw] max-w-[400px] flex flex-col"
+                            className="glass-1 p-4 sm:p-6 rounded-[24px] sm:rounded-[32px] relative group overflow-hidden border border-white/10 shrink-0 w-[75vw] sm:w-[45vw] lg:w-[28vw] max-w-[400px] flex flex-col"
                         >
                             <CardContent demo={demo} />
                         </div>
                     ))}
                 </div>
-            </div>
-
-            {/* Mobile 2-Column Grid */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:hidden px-[max(16px,4vw)] pb-8 w-full">
-                {items.map((demo, i) => (
-                    <div
-                        key={`mobile-${i}`}
-                        className="glass-1 p-3 sm:p-5 rounded-[16px] sm:rounded-[24px] relative group overflow-hidden border border-white/10 w-full flex flex-col"
-                    >
-                        <CardContent demo={demo} isMobile={true} />
-                    </div>
-                ))}
             </div>
         </div>
     );
@@ -113,6 +101,7 @@ export default function Portfolio() {
     // Split demos by category (new design logic)
     const dynamicDemos = demos.filter(d => d.category === "dynamic");
     const staticDemos = demos.filter(d => d.category === "static");
+    const softwareDemos = demos.filter(d => d.category === "software");
 
     return (
         <section className="py-14 relative z-10 overflow-hidden" id="portfolio">
@@ -145,7 +134,7 @@ export default function Portfolio() {
                 </div>
 
                 {/* ROW 2: STATIC & BLUEPRINTS */}
-                <div>
+                <div className="mb-24">
                     <div className="mb-10 px-[max(24px,4vw)] lg:text-right">
                         <div className="inline-flex items-center gap-3 px-4 py-2 bg-pulse-orange/10 border border-pulse-orange/20 rounded-full mb-4">
                             <h3 className="font-mono text-[11px] text-pulse-orange uppercase tracking-[0.2em] font-bold">Static & Scaleable</h3>
@@ -155,6 +144,20 @@ export default function Portfolio() {
                     </div>
                     <div className="w-full h-full">
                         <ScrollRow items={staticDemos} speed={0.4} reverse={true} />
+                    </div>
+                </div>
+
+                {/* ROW 3: SOFTWARE DEMOS */}
+                <div>
+                    <div className="mb-10 px-[max(24px,4vw)] text-center lg:text-left">
+                        <div className="inline-flex items-center gap-3 px-4 py-2 bg-pulse-cyan/10 border border-pulse-cyan/20 rounded-full mb-4">
+                            <span className="w-2 h-2 rounded-full bg-pulse-cyan animate-pulse" />
+                            <h3 className="font-mono text-[11px] text-pulse-cyan uppercase tracking-[0.2em] font-bold">Custom Software Demo</h3>
+                        </div>
+                        <p className="font-syne font-bold text-3xl text-white ml-2">High-End Solutions</p>
+                    </div>
+                    <div className="w-full h-full">
+                        <ScrollRow items={softwareDemos} speed={0.4} />
                     </div>
                 </div>
 
