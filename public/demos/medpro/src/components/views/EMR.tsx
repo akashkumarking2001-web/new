@@ -85,14 +85,47 @@ function AIDiagnosis() {
     const [analyzing, setAnalyzing] = useState(false);
     const [showResults, setShowResults] = useState(false);
 
+    const getDynamicAnalysis = (input: string) => {
+        const lower = input.toLowerCase();
+        if (lower.includes('bleed') || lower.includes('gum') || lower.includes('periodo')) {
+            return {
+                alert: 'High Risk: Periodontal Disease',
+                detail: 'Significant gingival bleeding detected. Flagged for deep scaling and potential flap surgery.',
+                recommendation: 'Recommend immediate periodontal charting and chlorhexidine mouthwash.',
+                diagnosis: 'Severe Periodontitis',
+                req: 'Full Mouth Debridement',
+                cost: '8,500'
+            };
+        } else if (lower.includes('ortho') || lower.includes('align') || lower.includes('crooked')) {
+            return {
+                alert: 'Orthodontic Evaluation Needed',
+                detail: 'Patient presents with malocclusion. Check for airway issues or TMJ disorders.',
+                recommendation: 'Recommend CBCT and digital scanning.',
+                diagnosis: 'Class II Malocclusion',
+                req: 'Clear Aligners phase 1',
+                cost: '80,000'
+            };
+        }
+        return {
+            alert: 'Critical Risk Alert',
+            detail: 'Patient has documented Penicillin Allergy. Amoxicillin prescription flagged and blocked.',
+            recommendation: 'Recommended alternative: Clindamycin 300mg QID.',
+            diagnosis: 'Irreversible Pulpitis (Tooth 18)',
+            req: 'Endodontic Therapy (RCT)',
+            cost: '4,500'
+        };
+    };
+
     const handleAnalyze = () => {
         setAnalyzing(true);
         setTimeout(() => {
             setAnalyzing(false);
             setShowResults(true);
             showToast("AI Differential Diagnosis Complete", "success");
-        }, 2000);
+        }, 1500);
     };
+
+    const analysis = getDynamicAnalysis(text);
 
     return (
         <div className="bg-surface border border-slate-200 rounded-2xl p-6 relative overflow-hidden shadow-sm flex flex-col h-full">
@@ -134,10 +167,10 @@ function AIDiagnosis() {
                         <div className="p-4 bg-white border border-alert/30 rounded-xl shadow-sm relative overflow-hidden group">
                             <div className="absolute top-0 right-0 w-16 h-16 bg-alert/5 rounded-bl-full pointer-events-none transition-transform group-hover:scale-110" />
                             <h4 className="flex items-center gap-2 text-sm font-bold text-alert mb-2">
-                                <ShieldAlert size={16} /> Critical Risk Alert
+                                <ShieldAlert size={16} /> {analysis.alert}
                             </h4>
-                            <p className="text-sm font-medium text-text-dark">Patient has documented <span className="font-bold text-alert">Penicillin Allergy</span>. Amoxicillin prescription flagged and blocked.</p>
-                            <p className="text-xs text-slate-500 mt-2">Recommended alternative: Clindamycin 300mg QID.</p>
+                            <p className="text-sm font-medium text-text-dark">{analysis.detail}</p>
+                            <p className="text-xs text-slate-500 mt-2">{analysis.recommendation}</p>
                         </div>
 
                         <div>
@@ -147,8 +180,8 @@ function AIDiagnosis() {
                                     <div className="flex items-center gap-3">
                                         <span className="bg-white text-primary font-mono text-sm px-2 py-1 border border-primary/20 rounded-md font-bold shadow-sm">96%</span>
                                         <div>
-                                            <span className="text-sm text-text-dark font-bold block">Irreversible Pulpitis (Tooth 18)</span>
-                                            <span className="text-xs text-slate-500 font-medium">Req: Endodontic Therapy (RCT)</span>
+                                            <span className="text-sm text-text-dark font-bold block">{analysis.diagnosis}</span>
+                                            <span className="text-xs text-slate-500 font-medium">Req: {analysis.req}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -159,8 +192,8 @@ function AIDiagnosis() {
                             <p className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">Financial Intelligence</p>
                             <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-xl">
                                 <div>
-                                    <p className="text-sm font-bold text-text-dark">Est. Treatment Plan: ₹4,500</p>
-                                    <p className="text-xs text-slate-500 font-medium">Includes RCT + Consult.</p>
+                                    <p className="text-sm font-bold text-text-dark">Est. Treatment Plan: ₹{analysis.cost}</p>
+                                    <p className="text-xs text-slate-500 font-medium">Includes {analysis.req} + Consult.</p>
                                 </div>
                                 <button onClick={() => showToast('Quote sent to patient via WhatsApp!', 'success')} className="px-3 py-1.5 bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs font-bold rounded flex items-center gap-1.5 transition-colors shadow-sm">
                                     <Share2 size={12} /> Send Quote
@@ -175,18 +208,29 @@ function AIDiagnosis() {
 }
 
 // Interactive 3D Tooth Component
-function Tooth3D({ position, active, hovered, setHovered, onClick, number }: any) {
+import { Cylinder } from '@react-three/drei';
+
+function Tooth3D({ position, active, hovered, setHovered, onClick, number, isLower }: any) {
     const scale = active ? 1.2 : (hovered ? 1.1 : 1);
+    const hasHistory = [18, 14, 21].includes(number); // Simulate history
+    const color = active ? '#3B82F6' : (hasHistory ? '#F87171' : (hovered ? '#e2e8f0' : '#fcfcfc'));
 
     return (
-        <group position={position} scale={scale} onPointerOver={() => setHovered(true)} onPointerOut={() => setHovered(false)} onClick={onClick}>
-            <RoundedBox args={[0.8, 1.2, 0.8]} radius={0.2} smoothness={4}>
-                <meshStandardMaterial color={active ? '#3B82F6' : (hovered ? '#cbd5e1' : '#f8fafc')} roughness={0.3} />
-            </RoundedBox>
-            {active && (
-                <Html position={[0, 1, 0]} center>
-                    <div className="bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-premium animate-bounce">
-                        #{number}
+        <group position={position} scale={scale} onPointerOver={(e) => { e.stopPropagation(); setHovered(true); }} onPointerOut={(e) => { e.stopPropagation(); setHovered(false); }} onClick={(e) => { e.stopPropagation(); onClick(); }}>
+            <group rotation={[isLower ? Math.PI : 0, 0, 0]}>
+                {/* Crown */}
+                <RoundedBox args={[0.5, 0.6, 0.5]} radius={0.1} smoothness={4} position={[0, 0.3, 0]}>
+                    <meshStandardMaterial color={color} roughness={0.2} metalness={0.1} />
+                </RoundedBox>
+                {/* Root */}
+                <Cylinder args={[0.2, 0.05, 0.7, 16]} position={[0, -0.35, 0]}>
+                    <meshStandardMaterial color={color} roughness={0.6} />
+                </Cylinder>
+            </group>
+            {(active || hasHistory) && (
+                <Html position={[0, isLower ? -1.2 : 1.2, 0]} center>
+                    <div className={`px-2 py-0.5 rounded shadow-premium text-[10px] whitespace-nowrap font-bold ${active ? 'bg-primary text-white animate-bounce' : 'bg-red-500 text-white'}`}>
+                        #{number} {hasHistory && !active ? '(RCT)' : ''}
                     </div>
                 </Html>
             )}
@@ -200,12 +244,21 @@ function InteractiveOdontogram() {
     const [hoveredTooth, setHoveredTooth] = useState<number | null>(null);
     const [showXray, setShowXray] = useState(false);
 
-    // Create a simplified arch consisting of 14 teeth
-    const teethNodes = Array.from({ length: 14 }).map((_, i) => {
-        const x = (i - 6.5) * 1.0;
-        const z = Math.abs(i - 6.5) * 0.4 - 2; // Curve
-        return { id: i + 1, position: [x, 0, z] as [number, number, number] };
+    const upperTeeth = Array.from({ length: 16 }).map((_, i) => {
+        const angle = (i / 15) * Math.PI;
+        const x = Math.cos(angle) * 2.5;
+        const z = -Math.sin(angle) * 1.5;
+        return { id: i + 1, position: [x, 0.8, z] as [number, number, number], isLower: false };
     });
+
+    const lowerTeeth = Array.from({ length: 16 }).map((_, i) => {
+        const angle = (i / 15) * Math.PI;
+        const x = Math.cos(angle) * 2.3;
+        const z = -Math.sin(angle) * 1.3 - 0.2;
+        return { id: i + 17, position: [x, -0.8, z] as [number, number, number], isLower: true };
+    });
+
+    const teethNodes = [...upperTeeth, ...lowerTeeth];
 
     return (
         <div className="bg-[#1a1c23] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col h-full relative group">
@@ -240,6 +293,7 @@ function InteractiveOdontogram() {
                                 hovered={hoveredTooth === t.id}
                                 setHovered={(val: boolean) => setHoveredTooth(val ? t.id : null)}
                                 onClick={() => { setSelectedTooth(t.id); showToast(`Selected Tooth #${t.id}`); }}
+                                isLower={t.isLower}
                             />
                         ))}
                     </group>
