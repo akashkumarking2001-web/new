@@ -3,7 +3,8 @@
 import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
-import Hero3D from "./Hero3D";
+import dynamic from "next/dynamic";
+const Hero3D = dynamic(() => import("./Hero3D"), { ssr: false });
 import LeadFormModal from "../ui/LeadFormModal";
 
 export default function Hero() {
@@ -32,11 +33,11 @@ export default function Hero() {
     };
 
     return (
-        <section ref={containerRef} className="relative min-h-screen pt-32 pb-16 flex items-center overflow-hidden" id="hero">
-            <div className="w-full max-w-[1440px] mx-auto px-[max(24px,4vw)] grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+        <section ref={containerRef} className="relative min-h-screen pt-20 md:pt-32 pb-0 lg:pb-16 flex items-center overflow-hidden" id="hero">
+            <div className="w-full max-w-[1440px] mx-auto px-[max(24px,4vw)] grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-12 items-center relative z-10">
 
                 {/* Left Content */}
-                <div className="space-y-8 mt-12 lg:mt-0">
+                <div className="space-y-8 mt-6 md:mt-12 lg:mt-0">
 
                     {/* Status Badge */}
                     <motion.div
@@ -96,9 +97,9 @@ export default function Hero() {
                         className="flex flex-col sm:flex-row flex-wrap gap-4 max-w-[550px]"
                     >
                         {[
-                            { title: "AI-Driven Solutions", desc: "We integrate cutting-edge AI to future-proof your business." },
-                            { title: "Rapid Delivery", desc: "Get your high-quality project delivered in just 1-2 weeks." },
-                            { title: "Iconic Design", desc: "Custom-built, premium UI/UX tailored to your brand identity." }
+                            { title: "Starting from ₹4000", desc: "Premium Mobile Apps & Websites built for performance." },
+                            { title: "Rapid Delivery", desc: "High-quality projects delivered in just 1-week turnaround." },
+                            { title: "AI-Driven Solutions", desc: "Cutting-edge AI integration to future-proof your business." }
                         ].map((stat, i) => (
                             <motion.div key={i} className="glass-1 p-4 rounded-xl hover:-translate-y-1 transition-transform border border-white/5 flex-1 min-w-[200px]">
                                 <div className="font-syne font-bold text-[15px] text-gradient mb-1">{stat.title}</div>
@@ -142,7 +143,7 @@ export default function Hero() {
                             <span className="relative z-10">Start Your Project →</span>
                             <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </button>
-                        <a href="https://wa.me/919999999999" target="_blank" rel="noopener noreferrer" className="gradient-border flex items-center h-[56px] px-9 rounded-[28px] font-sans font-medium text-[15px] group overflow-hidden">
+                        <a href="https://wa.me/918610381533" target="_blank" rel="noopener noreferrer" className="gradient-border flex items-center h-[56px] px-9 rounded-[28px] font-sans font-medium text-[15px] group overflow-hidden">
                             <span className="relative z-10 text-white group-hover:text-pulse-cyan transition-colors flex items-center gap-2">
                                 <img src="https://img.icons8.com/fluency/48/whatsapp.png" alt="WhatsApp" className="w-6 h-6 object-contain drop-shadow-[0_0_10px_rgba(37,211,102,0.8)]" />
                                 Chat on WhatsApp
@@ -158,7 +159,7 @@ export default function Hero() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.6, delay: 0 }}
-                    className="relative w-full aspect-square lg:aspect-auto h-[400px] lg:h-full lg:min-h-[600px] cursor-none"
+                    className="relative w-full aspect-square lg:aspect-auto h-[400px] lg:h-full lg:min-h-[600px] cursor-none -mt-8 lg:mt-0"
                 >
                     <Hero3D />
                 </motion.div>

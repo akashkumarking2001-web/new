@@ -208,7 +208,7 @@ export default function TechStack() {
     const containerRef = useRef<HTMLDivElement>(null);
 
     return (
-        <section ref={containerRef} className="py-16 relative z-10 w-full overflow-hidden bg-void" id="tech">
+        <section ref={containerRef} className="pt-0 lg:pt-16 pb-16 relative z-10 w-full overflow-hidden bg-void" id="tech">
             {/* Background Atmosphere */}
             <div className="absolute inset-0 z-0 pointer-events-none">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-pulse-violet/5 blur-[120px] rounded-full opacity-30" />

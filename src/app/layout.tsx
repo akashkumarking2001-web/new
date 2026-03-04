@@ -78,6 +78,8 @@ const techAgencySchema = {
   ]
 };
 
+import FloatingWhatsApp from "@/components/ui/FloatingWhatsApp";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -94,6 +96,7 @@ export default function RootLayout({
       <body className="bg-void text-text-primary font-sans antialiased overflow-x-hidden min-h-screen relative" suppressHydrationWarning>
         <CustomCursor />
         <SmoothScroll>{children}</SmoothScroll>
+        <FloatingWhatsApp />
       </body>
     </html>
   );

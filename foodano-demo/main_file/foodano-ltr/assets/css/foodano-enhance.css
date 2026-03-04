@@ -1,0 +1,546 @@
+/* ============================================================
+   FOODANO FUTURISTIC ENHANCEMENT LAYER
+   Injected non-destructively on top of existing styles
+   ============================================================ */
+
+/* ── Root tokens ── */
+:root {
+    --neon-green: #4CAF50;
+    --neon-green-glow: rgba(76, 175, 80, 0.6);
+    --cyber-blue: #00d4ff;
+    --cyber-blue-glow: rgba(0, 212, 255, 0.5);
+    --glow-soft: rgba(76, 175, 80, 0.15);
+    --transition-smooth: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* ── Subtle dot-grid overlay on entire page ── */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(circle, rgba(76, 175, 80, 0.07) 1px, transparent 1px);
+    background-size: 36px 36px;
+    pointer-events: none;
+    z-index: 0;
+    animation: gridDrift 20s linear infinite;
+}
+
+@keyframes gridDrift {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 36px 36px;
+    }
+}
+
+/* ── Keep all real content above the grid ── */
+header,
+section,
+.header-area,
+.main-wrapper,
+footer,
+.slider-area,
+.hero-area,
+main,
+.container {
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Custom scrollbar ── */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--neon-green), var(--cyber-blue));
+    border-radius: 4px;
+}
+
+/* ── Header glassmorphism ── */
+.header-area,
+.sticky-header,
+.header-sticky {
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    background: rgba(255, 255, 255, 0.93) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08), 0 0 20px rgba(76, 175, 80, 0.08) !important;
+    transition: var(--transition-smooth) !important;
+}
+
+/* ── Navigation underline sweep ── */
+.main-menu>ul>li>a,
+.main-nav>ul>li>a {
+    position: relative;
+    transition: color 0.3s ease !important;
+}
+
+.main-menu>ul>li>a::after,
+.main-nav>ul>li>a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    right: 50%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--neon-green), var(--cyber-blue));
+    border-radius: 2px;
+    transition: left 0.35s ease, right 0.35s ease;
+}
+
+.main-menu>ul>li:hover>a::after,
+.main-menu>ul>li.active>a::after,
+.main-nav>ul>li:hover>a::after {
+    left: 0;
+    right: 0;
+}
+
+/* ── Animated hero gradient overlay ── */
+.slider-area,
+.hero-slider,
+.banner-area {
+    position: relative;
+}
+
+.slider-area::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(130deg,
+            rgba(76, 175, 80, 0.06) 0%,
+            rgba(0, 212, 255, 0.04) 50%,
+            rgba(76, 175, 80, 0.06) 100%);
+    background-size: 300% 300%;
+    animation: heroShimmer 10s ease infinite;
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes heroShimmer {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* ── All buttons – neon glow on hover ── */
+.btn,
+a.btn,
+.button,
+input[type="submit"],
+button[type="submit"],
+.shop-cart-btn,
+.cart-btn,
+.addcart-btn {
+    transition: var(--transition-smooth) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.btn:hover,
+a.btn:hover,
+.button:hover {
+    box-shadow:
+        0 0 18px var(--neon-green-glow),
+        0 0 40px rgba(76, 175, 80, 0.25),
+        0 6px 20px rgba(0, 0, 0, 0.1) !important;
+    transform: translateY(-3px) scale(1.02) !important;
+}
+
+/* Ripple effect on buttons */
+.btn-ripple-active::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.45);
+    transform: translate(-50%, -50%);
+    animation: btnRipple 0.6s linear forwards;
+}
+
+@keyframes btnRipple {
+    to {
+        width: 350px;
+        height: 350px;
+        opacity: 0;
+    }
+}
+
+/* ── Product cards – lift + glow + 3D tilt ── */
+.product-item,
+.single-product,
+.product-wrap,
+.shop-item,
+.product-card {
+    transition:
+        transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+        box-shadow 0.4s ease !important;
+    will-change: transform;
+}
+
+.product-item:hover,
+.single-product:hover,
+.product-wrap:hover,
+.shop-item:hover {
+    box-shadow:
+        0 22px 60px rgba(76, 175, 80, 0.18),
+        0 0 30px rgba(0, 212, 255, 0.08) !important;
+}
+
+/* Product image zoom */
+.product-img,
+.product-thumb,
+.product-image,
+.product-item .thumb,
+.single-product .thumb {
+    overflow: hidden !important;
+}
+
+.product-img img,
+.product-thumb img,
+.product-image img,
+.product-item .thumb img,
+.single-product .thumb img {
+    transition: transform 0.5s ease !important;
+}
+
+.product-img:hover img,
+.product-thumb:hover img,
+.product-image:hover img,
+.product-item:hover .thumb img,
+.single-product:hover .thumb img {
+    transform: scale(1.1) !important;
+}
+
+/* ── Sale / badge pulse ── */
+.badge,
+.onsale,
+.sale-flash,
+.new-badge,
+.hot-badge {
+    animation: badgePulse 2.5s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.55);
+    }
+
+    50% {
+        box-shadow: 0 0 0 8px rgba(76, 175, 80, 0);
+    }
+}
+
+/* ── Floating feature / service icons ── */
+.feature-icon,
+.service-icon,
+.icon-box i,
+.feature-item .icon,
+.services-item .icon {
+    display: inline-block;
+    animation: floatIcon 3s ease-in-out infinite;
+}
+
+.feature-item:nth-child(2) .feature-icon,
+.feature-item:nth-child(2) .icon {
+    animation-delay: 0.5s;
+}
+
+.feature-item:nth-child(3) .feature-icon,
+.feature-item:nth-child(3) .icon {
+    animation-delay: 1s;
+}
+
+.feature-item:nth-child(4) .feature-icon,
+.feature-item:nth-child(4) .icon {
+    animation-delay: 1.5s;
+}
+
+@keyframes floatIcon {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* ── Section title accent underline ── */
+.section-title h2,
+.section-heading h2,
+.section-title h3,
+h2.section-title {
+    position: relative;
+    display: inline-block;
+}
+
+.section-title h2::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background: linear-gradient(90deg, var(--neon-green), var(--cyber-blue));
+    border-radius: 2px;
+    transition: width 1s ease;
+}
+
+.section-title.in-view h2::after {
+    width: 100%;
+}
+
+/* ── Scroll reveal base ── */
+.foodano-reveal {
+    opacity: 0;
+    transform: translateY(45px);
+    transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.foodano-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── Counter gradient text ── */
+.counter-num,
+.fact-count,
+.odometer {
+    background: linear-gradient(135deg, var(--neon-green), var(--cyber-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800 !important;
+}
+
+/* ── Price tags ── */
+.price,
+.product-price,
+.woocommerce-Price-amount,
+ins .amount,
+del .amount,
+.current-price {
+    position: relative;
+}
+
+.price,
+.product-price {
+    transition: color 0.3s ease;
+}
+
+/* ── Blog / Team card lift ── */
+.blog-item,
+.blog-post,
+.team-item,
+.single-blog,
+.team-member {
+    transition: transform 0.4s ease, box-shadow 0.4s ease !important;
+}
+
+.blog-item:hover,
+.blog-post:hover,
+.team-item:hover,
+.single-blog:hover {
+    transform: translateY(-6px) !important;
+    box-shadow: 0 18px 50px rgba(76, 175, 80, 0.12) !important;
+}
+
+/* ── Custom futuristic cursor ── */
+#foodano-cursor-ring {
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid var(--neon-green);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 999999;
+    transition: transform 0.12s ease, background 0.2s ease;
+    mix-blend-mode: multiply;
+}
+
+#foodano-cursor-dot {
+    width: 5px;
+    height: 5px;
+    background: var(--neon-green);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 999999;
+    transform: translate(-50%, -50%);
+}
+
+body:has(a:hover) #foodano-cursor-ring,
+body:has(button:hover) #foodano-cursor-ring {
+    transform: scale(2);
+    background: rgba(76, 175, 80, 0.12);
+}
+
+/* ── INR badge shown next to prices ── */
+.inr-converted {
+    font-size: 0.75em;
+    color: var(--neon-green);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+/* ── Neon toast notification ── */
+#foodano-toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(76, 175, 80, 0.35);
+    border-radius: 14px;
+    padding: 14px 22px;
+    z-index: 99999;
+    box-shadow:
+        0 8px 32px rgba(76, 175, 80, 0.18),
+        0 0 20px rgba(76, 175, 80, 0.08);
+    transform: translateX(130%);
+    transition: transform 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 270px;
+    font-family: inherit;
+}
+
+#foodano-toast.show {
+    transform: translateX(0);
+}
+
+#foodano-toast-title {
+    font-weight: 700;
+    font-size: 14px;
+    color: #2e7d32;
+    margin-bottom: 3px;
+}
+
+#foodano-toast-sub {
+    font-size: 12px;
+    color: #555;
+}
+
+/* ── Particle canvas ── */
+#foodano-particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.22;
+}
+
+/* ── Shimmer for placeholder images ── */
+img[alt=""],
+img:not([src]),
+img[src*="placeholder"],
+img[src*="via.placeholder"] {
+    background: linear-gradient(90deg, #e8f5e9 25%, #c8e6c9 50%, #e8f5e9 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.8s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* ── Wishlist / cart icon bounce ── */
+.header-right .icon:hover,
+.mini-cart:hover,
+.header-action a:hover {
+    animation: iconBounce 0.4s ease;
+}
+
+@keyframes iconBounce {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    40% {
+        transform: scale(1.25) rotate(-8deg);
+    }
+
+    70% {
+        transform: scale(0.95) rotate(4deg);
+    }
+}
+
+/* ── Subscribe section glow ── */
+.subscribe-area,
+.subscribe-section,
+.newsletter-area {
+    position: relative;
+}
+
+.subscribe-area input[type="email"],
+.newsletter-area input[type="email"] {
+    transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+.subscribe-area input[type="email"]:focus,
+.newsletter-area input[type="email"]:focus {
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.25) !important;
+    border-color: var(--neon-green) !important;
+    outline: none !important;
+}
+
+/* ── Footer link hover ── */
+.footer-widget a {
+    transition: color 0.25s ease, letter-spacing 0.25s ease !important;
+}
+
+.footer-widget a:hover {
+    color: var(--neon-green) !important;
+    letter-spacing: 0.04em !important;
+}
+
+/* ── Futuristic horizontal divider ── */
+.foodano-divider {
+    height: 1px;
+    background: linear-gradient(90deg,
+            transparent, var(--neon-green), var(--cyber-blue), var(--neon-green), transparent);
+    margin: 0;
+    animation: divGlow 4s ease-in-out infinite;
+}
+
+@keyframes divGlow {
+
+    0%,
+    100% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}

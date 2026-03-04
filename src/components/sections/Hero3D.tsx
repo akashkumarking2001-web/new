@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { EffectComposer, Bloom, ChromaticAberration } from "@react-three/postprocessing";
@@ -10,36 +10,35 @@ function DigitalHeart() {
     const heartRef = useRef<THREE.Mesh>(null);
 
     // Generate a basic heart shape geometry
-    const geometry = new THREE.ShapeGeometry(
-        (function () {
-            const x = 0, y = 0;
-            const heartShape = new THREE.Shape();
-            heartShape.moveTo(x + 25, y + 25);
-            heartShape.bezierCurveTo(x + 25, y + 25, x + 20, y, x, y);
-            heartShape.bezierCurveTo(x - 30, y, x - 30, y + 35, x - 30, y + 35);
-            heartShape.bezierCurveTo(x - 30, y + 55, x - 10, y + 77, x + 25, y + 95);
-            heartShape.bezierCurveTo(x + 60, y + 77, x + 80, y + 55, x + 80, y + 35);
-            heartShape.bezierCurveTo(x + 80, y + 35, x + 80, y, x + 50, y);
-            heartShape.bezierCurveTo(x + 35, y, x + 25, y + 25, x + 25, y + 25);
-            return heartShape;
-        })()
-    );
+    const geometry = React.useMemo(() => {
+        const x = 0, y = 0;
+        const heartShape = new THREE.Shape();
+        heartShape.moveTo(x + 25, y + 25);
+        heartShape.bezierCurveTo(x + 25, y + 25, x + 20, y, x, y);
+        heartShape.bezierCurveTo(x - 30, y, x - 30, y + 35, x - 30, y + 35);
+        heartShape.bezierCurveTo(x - 30, y + 55, x - 10, y + 77, x + 25, y + 95);
+        heartShape.bezierCurveTo(x + 60, y + 77, x + 80, y + 55, x + 80, y + 35);
+        heartShape.bezierCurveTo(x + 80, y + 35, x + 80, y, x + 50, y);
+        heartShape.bezierCurveTo(x + 35, y, x + 25, y + 25, x + 25, y + 25);
 
-    geometry.center();
+        const geo = new THREE.ShapeGeometry(heartShape);
+        geo.center();
+        return geo;
+    }, []);
 
     useFrame((state) => {
         if (heartRef.current) {
             heartRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
             heartRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.2;
-            const scale = 1 + Math.sin(state.clock.elapsedTime * 4) * 0.03;
-            heartRef.current.scale.set(scale * 0.03, -scale * 0.03, scale * 0.03);
+            const scaleFactor = state.size.width < 768 ? 0.018 : 0.03;
+            const pulse = 1 + Math.sin(state.clock.elapsedTime * 4) * 0.03;
+            heartRef.current.scale.set(pulse * scaleFactor, -pulse * scaleFactor, pulse * scaleFactor);
         }
     });
 
     return (
         <group>
-            <mesh ref={heartRef}>
-                <primitive object={geometry} />
+            <mesh ref={heartRef} geometry={geometry}>
                 <meshPhysicalMaterial
                     color="#7B2FE8"
                     emissive="#3B6EFF"
@@ -87,11 +86,11 @@ function OrbitRings() {
 
 export default function Hero3D() {
     return (
-        <div className="w-full h-full relative" style={{ height: '600px' }}>
+        <div className="w-full relative h-[350px] sm:h-[450px] lg:h-[600px]">
             <Canvas
                 camera={{ position: [0, 0, 8], fov: 50 }}
-                dpr={1}
-                gl={{ antialias: false, powerPreference: "high-performance", failIfMajorPerformanceCaveat: false, alpha: true }}
+                dpr={[1, 1.5]}
+                gl={{ antialias: false, powerPreference: "high-performance", alpha: true }}
             >
                 <WebGLContextCleaner />
                 <ambientLight intensity={0.5} />
@@ -100,7 +99,7 @@ export default function Hero3D() {
                 <DigitalHeart />
                 <OrbitRings />
 
-                <EffectComposer multisampling={0} frameBufferType={THREE.HalfFloatType}>
+                <EffectComposer multisampling={0}>
                     <Bloom luminanceThreshold={0.2} intensity={2.5} />
                     <ChromaticAberration
                         radialModulation={false}

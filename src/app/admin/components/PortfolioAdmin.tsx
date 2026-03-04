@@ -13,6 +13,7 @@ type Demo = {
     accent: string;
     bg: string;
     order: number;
+    status?: string;
 };
 
 export default function PortfolioAdmin() {
@@ -75,7 +76,8 @@ export default function PortfolioAdmin() {
             image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800",
             accent: "#ffffff",
             bg: "#000000",
-            order: maxOrder + 1
+            order: maxOrder + 1,
+            status: "ON"
         };
         const newDemos = [...demos, newDemo];
         setDemos(newDemos);
@@ -245,6 +247,21 @@ export default function PortfolioAdmin() {
                                         className="mt-5 w-8 h-8 rounded-full bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white flex items-center justify-center text-sm transition-colors flex-shrink-0"
                                         title="Delete"
                                     >×</button>
+                                </div>
+
+                                {/* Status Toggle */}
+                                <div>
+                                    <p className="text-[10px] uppercase tracking-[0.2em] text-pulse-cyan font-bold mb-1.5">Visibility Toggle (Global)</p>
+                                    <button
+                                        onClick={() => updateDemo(actualIndex, "status", demo.status === "OFF" ? "ON" : "OFF")}
+                                        className={`w-full py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] border transition-all flex items-center justify-center gap-3 ${demo.status === "OFF"
+                                                ? "bg-red-500/20 text-red-500 border-red-500/40 hover:bg-red-500 hover:text-white"
+                                                : "bg-green-500/20 text-green-500 border-green-500/40 hover:bg-green-500 hover:text-white shadow-[0_0_15px_rgba(34,197,94,0.1)]"
+                                            }`}
+                                    >
+                                        <span className={`w-2 h-2 rounded-full ${demo.status === "OFF" ? "bg-red-500" : "bg-green-500 animate-pulse"}`} />
+                                        {demo.status === "OFF" ? "PROJECT HIDDEN" : "PROJECT ACTIVE"}
+                                    </button>
                                 </div>
 
                                 {/* Category + Order position */}

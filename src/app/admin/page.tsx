@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react";
 import LeadsAdmin from "./components/LeadsAdmin";
+import BonusesAdmin from "./components/BonusesAdmin";
 import PortfolioAdmin from "./components/PortfolioAdmin";
 import PricingAdmin from "./components/PricingAdmin";
 import BlogAdmin from "./components/BlogAdmin";
+import SettingsAdmin from "./components/SettingsAdmin";
 
 export default function AdminPage() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -78,7 +80,7 @@ export default function AdminPage() {
             </div>
 
             <div className="flex space-x-2 mb-8 overflow-x-auto pb-2 border-b border-white/10">
-                {['leads', 'portfolio', 'pricing', 'blogs'].map((tab) => (
+                {['leads', 'bonuses', 'portfolio', 'pricing', 'blogs', 'settings'].map((tab) => (
                     <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
@@ -92,9 +94,11 @@ export default function AdminPage() {
 
             <div className="glass-1 p-6 md:p-8 rounded-3xl border border-white/10 min-h-[500px]">
                 {activeTab === 'leads' && <LeadsAdmin />}
+                {activeTab === 'bonuses' && <BonusesAdmin />}
                 {activeTab === 'portfolio' && <PortfolioAdmin />}
                 {activeTab === 'pricing' && <PricingAdmin />}
                 {activeTab === 'blogs' && <BlogAdmin />}
+                {activeTab === 'settings' && <SettingsAdmin />}
             </div>
         </div>
     );

@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { motion, useAnimationControls } from "framer-motion";
 
 // Reusable Auto-Scrolling Component
 function ScrollRow({ items, speed = 1, reverse = false }: { items: any[], speed?: number, reverse?: boolean }) {
@@ -10,9 +11,62 @@ function ScrollRow({ items, speed = 1, reverse = false }: { items: any[], speed?
         return null;
     }
 
-    const displayItems = [...items, ...items];
-    const duration = 40 / speed;
-    const animClass = reverse ? "animate-portfolio-scroll-reverse" : "animate-portfolio-scroll";
+    const [isHovered, setIsHovered] = useState(false);
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const animationRef = useRef<number>();
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollLeft, setScrollLeft] = useState(0);
+
+    // Duplicate items for infinite loop
+    const displayItems = [...items, ...items, ...items];
+
+    useEffect(() => {
+        const row = scrollRef.current;
+        if (!row) return;
+
+        // Initialize scroll position to the middle third
+        row.scrollLeft = row.scrollWidth / 3;
+
+        const actualSpeed = reverse ? -speed : speed;
+
+        const animate = () => {
+            if (!isHovered && !isDragging) {
+                row.scrollLeft += actualSpeed;
+
+                // Infinite loop logic
+                if (row.scrollLeft >= (row.scrollWidth / 3) * 2) {
+                    row.scrollLeft = row.scrollWidth / 3;
+                } else if (row.scrollLeft <= 0) {
+                    row.scrollLeft = row.scrollWidth / 3;
+                }
+            }
+            animationRef.current = requestAnimationFrame(animate);
+        };
+
+        animationRef.current = requestAnimationFrame(animate);
+        return () => {
+            if (animationRef.current) cancelAnimationFrame(animationRef.current);
+        };
+    }, [isHovered, isDragging, speed, reverse]);
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+        setIsDragging(true);
+        setStartX(e.pageX - (scrollRef.current?.offsetLeft || 0));
+        setScrollLeft(scrollRef.current?.scrollLeft || 0);
+    };
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!isDragging || !scrollRef.current) return;
+        e.preventDefault();
+        const x = e.pageX - (scrollRef.current.offsetLeft || 0);
+        const walk = (x - startX) * 2;
+        scrollRef.current.scrollLeft = scrollLeft - walk;
+    };
+
+    const stopDragging = () => {
+        setIsDragging(false);
+    };
 
     const CardContent = ({ demo, isMobile = false }: { demo: any, isMobile?: boolean }) => (
         <>
@@ -68,16 +122,22 @@ function ScrollRow({ items, speed = 1, reverse = false }: { items: any[], speed?
 
     return (
         <div className="relative z-30 w-full mb-12 sm:mb-16">
-            {/* Unified Scrolling Row for Desktop & Mobile */}
-            <div className="flex overflow-hidden pb-4 sm:pb-8 px-[max(16px,4vw)] cursor-grab active:cursor-grabbing w-full">
-                <div
-                    className={`flex gap-4 sm:gap-8 w-max ${animClass}`}
-                    style={{ '--duration': `${duration}s` } as any}
-                >
+            <div
+                className="flex overflow-x-hidden no-scrollbar pb-4 sm:pb-8 px-[max(16px,4vw)] cursor-grab active:cursor-grabbing w-full"
+                ref={scrollRef}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => { setIsHovered(false); stopDragging(); }}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={stopDragging}
+                onTouchStart={() => setIsHovered(true)}
+                onTouchEnd={() => setIsHovered(false)}
+            >
+                <div className="flex gap-4 sm:gap-8 w-max">
                     {displayItems.map((demo, i) => (
                         <div
                             key={i}
-                            className="glass-1 p-4 sm:p-6 rounded-[24px] sm:rounded-[32px] relative group overflow-hidden border border-white/10 shrink-0 w-[75vw] sm:w-[45vw] lg:w-[28vw] max-w-[400px] flex flex-col"
+                            className="glass-1 p-4 sm:p-6 rounded-[24px] sm:rounded-[32px] relative group overflow-hidden border border-white/10 shrink-0 w-[80vw] sm:w-[50vw] lg:w-[30vw] max-w-[450px] flex flex-col"
                         >
                             <CardContent demo={demo} />
                         </div>
@@ -94,11 +154,14 @@ export default function Portfolio() {
     useEffect(() => {
         fetch('/api/portfolio')
             .then(res => res.json())
-            .then(data => setDemos(data.sort((a: any, b: any) => (a.order || 0) - (b.order || 0))))
+            .then(data => {
+                // Filter by status "ON"
+                const activeDemos = data.filter((d: any) => d.status === "ON" || !d.status);
+                setDemos(activeDemos.sort((a: any, b: any) => (a.order || 0) - (b.order || 0)));
+            })
             .catch(console.error);
     }, []);
 
-    // Split demos by category (new design logic)
     const dynamicDemos = demos.filter(d => d.category === "dynamic");
     const staticDemos = demos.filter(d => d.category === "static");
     const softwareDemos = demos.filter(d => d.category === "software");
@@ -107,76 +170,97 @@ export default function Portfolio() {
         <section className="py-14 relative z-10 overflow-hidden" id="portfolio">
             <div className="max-w-[1440px] mx-auto relative">
 
-                {/* Header */}
-                <div className="mb-20 px-[max(24px,4vw)] text-center lg:text-left">
-                    <div className="font-mono text-[13px] text-pulse-cyan tracking-[0.2em] mb-4 uppercase">&lt; Our_Projects_Catalog /&gt;</div>
-                    <h2 className="font-syne font-bold text-h2 text-white mb-6">
-                        Work That Speaks
-                    </h2>
-                    <p className="font-sans text-body-lg text-text-secondary max-w-2xl mx-auto lg:mx-0">
-                        Explore our diverse portfolio of custom engineered digital products.
-                        Swipe freely or let them auto-scroll through our high-performance architecture.
-                    </p>
+                <div className="mb-20 px-[max(24px,4vw)]">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end">
+                        <div className="text-center lg:text-left">
+                            <div className="font-mono text-[13px] text-pulse-cyan tracking-[0.2em] mb-4 uppercase">&lt; Our_Projects_Catalog /&gt;</div>
+                            <h2 className="font-syne font-bold text-h2 text-white mb-6">
+                                Work That Speaks
+                            </h2>
+                            <p className="font-sans text-body-lg text-text-secondary max-w-2xl mx-auto lg:mx-0">
+                                Explore our diverse portfolio of custom engineered digital products.
+                                Swipe freely or let them auto-scroll through our high-performance architecture.
+                            </p>
+                        </div>
+
+                        <div className="glass-2 p-6 rounded-2xl border-l-[4px] border-pulse-cyan bg-pulse-cyan/5">
+                            <p className="font-mono text-[10px] text-pulse-cyan uppercase tracking-widest mb-3 font-bold">● Customization Note</p>
+                            <p className="font-sans text-sm text-text-primary leading-relaxed italic">
+                                "These are demo projects intended to show our capabilities. Unlike other agencies that reuse the same templates, <span className="text-white font-bold">we do not use pre-made templates for our clients</span>. Every project we deliver is 100% customized and built from scratch based specifically on your business requirements and unique needs."
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
-                {/* ROW 1: ANIMATED & DYNAMIC */}
                 <div className="mb-24">
-                    <div className="mb-10 px-[max(24px,4vw)]">
-                        <div className="inline-flex items-center gap-3 px-4 py-2 bg-pulse-cyan/10 border border-pulse-cyan/20 rounded-full mb-4">
-                            <span className="w-2 h-2 rounded-full bg-pulse-cyan animate-pulse" />
-                            <h3 className="font-mono text-[11px] text-pulse-cyan uppercase tracking-[0.2em] font-bold">Animated & Immersive</h3>
+                    <div className="mb-10 px-[max(24px,4vw)] flex flex-wrap items-end justify-between gap-6">
+                        <div>
+                            <div className="inline-flex items-center gap-3 px-4 py-2 bg-pulse-cyan/10 border border-pulse-cyan/20 rounded-full mb-4">
+                                <span className="w-2 h-2 rounded-full bg-pulse-cyan animate-pulse" />
+                                <h3 className="font-mono text-[11px] text-pulse-cyan uppercase tracking-[0.2em] font-bold">Animated & Immersive</h3>
+                            </div>
+                            <p className="font-syne font-bold text-3xl text-white ml-2">High-End Dynamic Experiences</p>
                         </div>
-                        <p className="font-syne font-bold text-3xl text-white ml-2">High-End Dynamic Experiences</p>
+                        <Link href="/portfolio/dynamic">
+                            <button className="px-6 py-3 rounded-full border border-white/10 hover:border-pulse-cyan/50 text-white font-mono text-[12px] uppercase tracking-widest transition-all glass-1">
+                                View Full Gallery →
+                            </button>
+                        </Link>
                     </div>
                     <div className="w-full h-full">
-                        <ScrollRow items={dynamicDemos} speed={0.4} />
+                        <ScrollRow items={dynamicDemos} speed={1.5} />
                     </div>
                 </div>
 
-                {/* ROW 2: STATIC & BLUEPRINTS */}
                 <div className="mb-24">
-                    <div className="mb-10 px-[max(24px,4vw)] lg:text-right">
-                        <div className="inline-flex items-center gap-3 px-4 py-2 bg-pulse-orange/10 border border-pulse-orange/20 rounded-full mb-4">
-                            <h3 className="font-mono text-[11px] text-pulse-orange uppercase tracking-[0.2em] font-bold">Static & Scaleable</h3>
-                            <span className="w-2 h-2 rounded-full bg-pulse-orange animate-pulse" />
+                    <div className="mb-10 px-[max(24px,4vw)] flex flex-wrap items-end justify-between gap-6 lg:flex-row-reverse">
+                        <div className="lg:text-right">
+                            <div className="inline-flex items-center gap-3 px-4 py-2 bg-pulse-orange/10 border border-pulse-orange/20 rounded-full mb-4">
+                                <h3 className="font-mono text-[11px] text-pulse-orange uppercase tracking-[0.2em] font-bold">Static & Scaleable</h3>
+                                <span className="w-2 h-2 rounded-full bg-pulse-orange animate-pulse" />
+                            </div>
+                            <p className="font-syne font-bold text-3xl text-white mr-2">Precision Digital Structures</p>
                         </div>
-                        <p className="font-syne font-bold text-3xl text-white mr-2">Precision Digital Structures</p>
+                        <Link href="/portfolio/static">
+                            <button className="px-6 py-3 rounded-full border border-white/10 hover:border-pulse-orange/50 text-white font-mono text-[12px] uppercase tracking-widest transition-all glass-1">
+                                View Full Gallery →
+                            </button>
+                        </Link>
                     </div>
                     <div className="w-full h-full">
-                        <ScrollRow items={staticDemos} speed={0.4} reverse={true} />
+                        <ScrollRow items={staticDemos} speed={1.5} reverse={true} />
                     </div>
                 </div>
 
-                {/* ROW 3: SOFTWARE DEMOS */}
                 <div>
-                    <div className="mb-10 px-[max(24px,4vw)] text-center lg:text-left">
-                        <div className="inline-flex items-center gap-3 px-4 py-2 bg-pulse-cyan/10 border border-pulse-cyan/20 rounded-full mb-4">
-                            <span className="w-2 h-2 rounded-full bg-pulse-cyan animate-pulse" />
-                            <h3 className="font-mono text-[11px] text-pulse-cyan uppercase tracking-[0.2em] font-bold">Custom Software Demo</h3>
+                    <div className="mb-10 px-[max(24px,4vw)] flex flex-wrap items-end justify-between gap-6">
+                        <div>
+                            <div className="inline-flex items-center gap-3 px-4 py-2 bg-pulse-cyan/10 border border-pulse-cyan/20 rounded-full mb-4">
+                                <span className="w-2 h-2 rounded-full bg-pulse-cyan animate-pulse" />
+                                <h3 className="font-mono text-[11px] text-pulse-cyan uppercase tracking-[0.2em] font-bold">Custom Software Demo</h3>
+                            </div>
+                            <p className="font-syne font-bold text-3xl text-white ml-2">High-End Solutions</p>
                         </div>
-                        <p className="font-syne font-bold text-3xl text-white ml-2">High-End Solutions</p>
+                        <Link href="/portfolio/software">
+                            <button className="px-6 py-3 rounded-full border border-white/10 hover:border-pulse-cyan/50 text-white font-mono text-[12px] uppercase tracking-widest transition-all glass-1">
+                                View Full Gallery →
+                            </button>
+                        </Link>
                     </div>
                     <div className="w-full h-full">
-                        <ScrollRow items={softwareDemos} speed={0.4} />
+                        <ScrollRow items={softwareDemos} speed={1.5} />
                     </div>
                 </div>
 
             </div>
 
-            <style jsx>{`
-                .animate-portfolio-scroll {
-                    animation: portfolioScroll var(--duration, 40s) linear infinite;
+            <style jsx global>{`
+                .no-scrollbar::-webkit-scrollbar {
+                    display: none;
                 }
-                .animate-portfolio-scroll-reverse {
-                    animation: portfolioScrollReverse var(--duration, 40s) linear infinite;
-                }
-                @keyframes portfolioScroll {
-                    0% { transform: translateX(0); }
-                    100% { transform: translateX(calc(-50% - 1rem)); } 
-                }
-                @keyframes portfolioScrollReverse {
-                    0% { transform: translateX(calc(-50% - 1rem)); }
-                    100% { transform: translateX(0); }
+                .no-scrollbar {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
                 }
             `}</style>
         </section>

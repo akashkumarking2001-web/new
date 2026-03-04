@@ -47,18 +47,16 @@ export default function FinalCTA() {
         <section ref={sectionRef} className="relative py-16 flex items-center justify-center overflow-hidden z-10">
             {/* 3D Background */}
             <div className="absolute inset-0 pointer-events-none opacity-40">
-                {isInView && (
-                    <Canvas
-                        camera={{ position: [0, 0, 5], fov: 60 }}
-                        dpr={1}
-                        gl={{ antialias: false, powerPreference: "high-performance", failIfMajorPerformanceCaveat: false }}
-                    >
-                        <HeartbeatTube />
-                        <EffectComposer multisampling={0} frameBufferType={THREE.HalfFloatType}>
-                            <Bloom luminanceThreshold={0.1} intensity={2} />
-                        </EffectComposer>
-                    </Canvas>
-                )}
+                <Canvas
+                    camera={{ position: [0, 0, 5], fov: 60 }}
+                    dpr={[1, 1.5]}
+                    gl={{ antialias: true, powerPreference: "high-performance" }}
+                >
+                    <HeartbeatTube />
+                    <EffectComposer multisampling={4}>
+                        <Bloom luminanceThreshold={0.2} intensity={1} />
+                    </EffectComposer>
+                </Canvas>
             </div>
 
             <div className="max-w-[800px] w-full mx-auto px-6 text-center relative z-20">

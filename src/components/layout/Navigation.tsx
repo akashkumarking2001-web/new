@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useScroll, motion, useTransform, AnimatePresence } from "framer-motion";
-import { Globe, DeviceMobile, Stack, TrendUp, List } from "@phosphor-icons/react";
+import { Globe, DeviceMobile, Stack, TrendUp, List, Gift } from "@phosphor-icons/react";
+import FreeBonusModal from "../ui/FreeBonusModal";
 
 import Image from "next/image";
 
@@ -14,7 +15,7 @@ function Logo() {
                 <img
                     src="/AxoSoul.png"
                     alt="AxoSoul Logo"
-                    className="h-[80px] md:h-[100px] lg:h-[120px] w-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                    className="h-[100px] md:h-[100px] lg:h-[120px] w-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
                 />
             </div>
         </div>
@@ -26,6 +27,7 @@ export default function Navigation() {
     const [scrolled, setScrolled] = useState(false);
     const [servicesOpen, setServicesOpen] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [bonusOpen, setBonusOpen] = useState(false);
 
     useEffect(() => {
         return scrollY.on("change", (latest) => {
@@ -71,6 +73,14 @@ export default function Navigation() {
                         Blog
                         <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-axo-gradient transition-all duration-300 group-hover:w-full" />
                     </Link>
+                    <button
+                        onClick={() => setBonusOpen(true)}
+                        className="flex items-center gap-2 text-pulse-orange hover:text-white transition-colors relative group font-bold animate-pulse"
+                    >
+                        <Gift size={18} weight="bold" />
+                        Free Bonus
+                        <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-pulse-orange transition-all duration-300 group-hover:w-full" />
+                    </button>
                     <Link href="/contact" className="hover:text-white transition-colors relative group">
                         Contact
                         <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-axo-gradient transition-all duration-300 group-hover:w-full" />
@@ -95,6 +105,8 @@ export default function Navigation() {
                 </button>
             </div>
 
+            <FreeBonusModal isOpen={bonusOpen} onClose={() => setBonusOpen(false)} />
+
             {/* Mobile Nav Overlay */}
             <AnimatePresence>
                 {mobileMenuOpen && (
@@ -108,6 +120,18 @@ export default function Navigation() {
                         <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">About Us</Link>
                         <Link href="/portfolio" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">Portfolio</Link>
                         <Link href="/blog" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">Blog</Link>
+
+                        <button
+                            onClick={() => {
+                                setMobileMenuOpen(false);
+                                setBonusOpen(true);
+                            }}
+                            className="flex items-center gap-2 text-pulse-orange font-bold text-lg hover:text-white text-left"
+                        >
+                            <Gift size={22} weight="bold" />
+                            Free Bonus
+                        </button>
+
                         <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">Contact</Link>
 
                         <div className="pt-4 border-t border-white/10 w-full">

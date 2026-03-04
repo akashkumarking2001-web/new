@@ -6,8 +6,8 @@ import Footer from "@/components/sections/Footer";
 
 import dynamic from "next/dynamic";
 
+import Hero from "@/components/sections/Hero";
 const VoidField = dynamic(() => import("@/components/3d/VoidField"), { ssr: false });
-const Hero = dynamic(() => import("@/components/sections/Hero"), { ssr: false });
 const FinalCTA = dynamic(() => import("@/components/sections/FinalCTA"), { ssr: false });
 const Services = dynamic(() => import("@/components/sections/Services"), { ssr: false });
 const AboutVision = dynamic(() => import("@/components/sections/AboutVision"), { ssr: false });

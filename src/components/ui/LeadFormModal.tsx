@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "@phosphor-icons/react";
+import { createPortal } from "react-dom";
 
 interface LeadFormModalProps {
     isOpen: boolean;
@@ -10,6 +11,9 @@ interface LeadFormModalProps {
 }
 
 export default function LeadFormModal({ isOpen, onClose }: LeadFormModalProps) {
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
+
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -31,32 +35,32 @@ export default function LeadFormModal({ isOpen, onClose }: LeadFormModalProps) {
             console.error('Failed to submit form', error);
         }
 
-        // Format the message for WhatsApp
         const message = `Hello AxoSoul! I'm interested in starting a project.%0A%0A*Name:* ${formData.name}%0A*Email:* ${formData.email}%0A*WhatsApp:* ${formData.whatsapp}%0A*Company:* ${formData.company}%0A*Project Details:* ${formData.projectDetails}`;
 
-        // Open WhatsApp Web/App
-        window.open(`https://wa.me/919999999999?text=${message}`, "_blank");
+        window.open(`https://wa.me/918610381533?text=${message}`, "_blank");
 
         onClose();
         setFormData({ name: "", email: "", whatsapp: "", company: "", projectDetails: "" });
     };
 
-    return (
+    if (!mounted) return null;
+
+    return createPortal(
         <AnimatePresence>
             {isOpen && (
-                <>
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100]"
+                        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
                     />
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] sm:w-[90%] max-w-[500px] max-h-[90vh] overflow-y-auto glass-2 rounded-3xl p-6 md:p-8 z-[101] border border-white/10 box-shadow"
+                        className="relative w-full max-w-[500px] max-h-[90vh] overflow-y-auto glass-2 rounded-3xl p-6 md:p-8 border border-white/10 shadow-2xl"
                     >
                         <button
                             onClick={onClose}
@@ -129,8 +133,9 @@ export default function LeadFormModal({ isOpen, onClose }: LeadFormModalProps) {
                             </button>
                         </form>
                     </motion.div>
-                </>
+                </div>
             )}
-        </AnimatePresence>
+        </AnimatePresence>,
+        document.body
     );
 }
