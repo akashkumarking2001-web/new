@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { LinkedinLogo, GithubLogo, XLogo, InstagramLogo, BehanceLogo } from "@phosphor-icons/react";
+import Image from "next/image";
 
 export default function Footer() {
     return (
@@ -32,9 +33,12 @@ export default function Footer() {
                     {/* Col 1 */}
                     <div className="flex flex-col gap-6">
                         <div className="flex items-center">
-                            <img
+                            <Image
                                 src="/AxoSoul.png"
                                 alt="AxoSoul Logo"
+                                width={120}
+                                height={80}
+                                loading="lazy"
                                 className="h-[80px] w-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
                             />
                         </div>
@@ -44,9 +48,15 @@ export default function Footer() {
                         </p>
 
                         <div className="flex gap-4 mt-4">
-                            {[LinkedinLogo, GithubLogo, XLogo, InstagramLogo, BehanceLogo].map((Icon, i) => (
-                                <a key={i} href="#" className="w-10 h-10 rounded-full glass-1 flex items-center justify-center text-text-secondary hover:text-white hover:bg-pulse-violet/20 hover:border-pulse-violet/40 transition-all duration-300">
-                                    <Icon size={18} />
+                            {[
+                                { Icon: LinkedinLogo, link: "https://linkedin.com/company/axosoul" },
+                                { Icon: GithubLogo, link: "https://github.com/axosoul" },
+                                { Icon: XLogo, link: "https://x.com/axosoul" },
+                                { Icon: InstagramLogo, link: "https://www.instagram.com/axosoul_?igsh=ZDdubGFvYzJ2bXkz" },
+                                { Icon: BehanceLogo, link: "https://behance.net/axosoul" }
+                            ].map((item, i) => (
+                                <a key={i} href={item.link} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full glass-1 flex items-center justify-center text-text-secondary hover:text-white hover:bg-pulse-violet/20 hover:border-pulse-violet/40 transition-all duration-300">
+                                    <item.Icon size={18} />
                                 </a>
                             ))}
                         </div>
@@ -72,9 +82,9 @@ export default function Footer() {
                                 { name: "Case Studies", link: "/#portfolio" },
                                 { name: "Blog & Insights", link: "/blog" },
                                 { name: "Careers", link: "/#contact" },
-                                { name: "Privacy Policy", link: "/" },
-                                { name: "Terms of Service", link: "/" },
-                                { name: "Refund Policy", link: "/" }
+                                { name: "Privacy Policy", link: "/privacy-policy" },
+                                { name: "Terms and Conditions", link: "/terms-and-conditions" },
+                                { name: "Refund Policy", link: "/terms-and-conditions#refund-policy" }
                             ].map(m => (
                                 <Link key={m.name} href={m.link} className="font-sans text-[14px] text-text-secondary hover:text-pulse-violet transition-colors">{m.name}</Link>
                             ))}

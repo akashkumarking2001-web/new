@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import Link from "next/link";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
@@ -44,7 +45,7 @@ export default function FinalCTA() {
     const isInView = useInView(sectionRef, { margin: "200px" });
 
     return (
-        <section ref={sectionRef} className="relative py-16 flex items-center justify-center overflow-hidden z-10">
+        <section id="contact" ref={sectionRef} className="relative py-16 flex items-center justify-center overflow-hidden z-10">
             {/* 3D Background */}
             <div className="absolute inset-0 pointer-events-none opacity-40">
                 <Canvas
@@ -53,7 +54,7 @@ export default function FinalCTA() {
                     gl={{ antialias: true, powerPreference: "high-performance" }}
                 >
                     <HeartbeatTube />
-                    <EffectComposer multisampling={4}>
+                    <EffectComposer multisampling={0}>
                         <Bloom luminanceThreshold={0.2} intensity={1} />
                     </EffectComposer>
                 </Canvas>
@@ -91,15 +92,19 @@ export default function FinalCTA() {
 
                 {/* CTAs */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                    <button className="h-[64px] px-10 rounded-full bg-axo-gradient font-sans font-semibold text-[16px] text-white hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(123,47,232,0.6)] relative overflow-hidden group">
-                        <span className="relative z-10 w-full inline-block">Start Your Project →</span>
-                        <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </button>
+                    <Link href="/contact" className="w-full sm:w-auto">
+                        <button className="w-full h-[64px] px-10 rounded-full bg-axo-gradient font-sans font-semibold text-[16px] text-white hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(123,47,232,0.6)] relative overflow-hidden group">
+                            <span className="relative z-10 w-full inline-block">Start Your Project →</span>
+                            <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </button>
+                    </Link>
 
-                    <button className="h-[64px] px-10 rounded-full border border-pulse-cyan/30 font-sans font-medium text-[16px] text-white hover:border-pulse-cyan transition-colors duration-300 relative overflow-hidden group">
-                        Book a Free 30-Min Call
-                        <div className="absolute inset-0 bg-pulse-cyan/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </button>
+                    <Link href="/contact" className="w-full sm:w-auto">
+                        <button className="w-full h-[64px] px-10 rounded-full border border-pulse-cyan/30 font-sans font-medium text-[16px] text-white hover:border-pulse-cyan transition-colors duration-300 relative overflow-hidden group">
+                            Book a Free 30-Min Call
+                            <div className="absolute inset-0 bg-pulse-cyan/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </button>
+                    </Link>
                 </div>
 
                 <p className="font-sans text-[12px] text-pulse-orange mt-8 flex items-center justify-center gap-2">

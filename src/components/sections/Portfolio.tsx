@@ -4,69 +4,20 @@ import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, useAnimationControls } from "framer-motion";
+import { Skeleton } from "@/components/ui/Skeleton";
 
+// Reusable Auto-Scrolling Component
 // Reusable Auto-Scrolling Component
 function ScrollRow({ items, speed = 1, reverse = false }: { items: any[], speed?: number, reverse?: boolean }) {
     if (!items || items.length === 0) {
-        return null;
+        return <div className="h-[400px] flex items-center justify-center font-mono opacity-20">Loading_Experience...</div>;
     }
 
     const [isHovered, setIsHovered] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
-    const animationRef = useRef<number>();
-    const [isDragging, setIsDragging] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const [scrollLeft, setScrollLeft] = useState(0);
 
-    // Duplicate items for infinite loop
-    const displayItems = [...items, ...items, ...items];
-
-    useEffect(() => {
-        const row = scrollRef.current;
-        if (!row) return;
-
-        // Initialize scroll position to the middle third
-        row.scrollLeft = row.scrollWidth / 3;
-
-        const actualSpeed = reverse ? -speed : speed;
-
-        const animate = () => {
-            if (!isHovered && !isDragging) {
-                row.scrollLeft += actualSpeed;
-
-                // Infinite loop logic
-                if (row.scrollLeft >= (row.scrollWidth / 3) * 2) {
-                    row.scrollLeft = row.scrollWidth / 3;
-                } else if (row.scrollLeft <= 0) {
-                    row.scrollLeft = row.scrollWidth / 3;
-                }
-            }
-            animationRef.current = requestAnimationFrame(animate);
-        };
-
-        animationRef.current = requestAnimationFrame(animate);
-        return () => {
-            if (animationRef.current) cancelAnimationFrame(animationRef.current);
-        };
-    }, [isHovered, isDragging, speed, reverse]);
-
-    const handleMouseDown = (e: React.MouseEvent) => {
-        setIsDragging(true);
-        setStartX(e.pageX - (scrollRef.current?.offsetLeft || 0));
-        setScrollLeft(scrollRef.current?.scrollLeft || 0);
-    };
-
-    const handleMouseMove = (e: React.MouseEvent) => {
-        if (!isDragging || !scrollRef.current) return;
-        e.preventDefault();
-        const x = e.pageX - (scrollRef.current.offsetLeft || 0);
-        const walk = (x - startX) * 2;
-        scrollRef.current.scrollLeft = scrollLeft - walk;
-    };
-
-    const stopDragging = () => {
-        setIsDragging(false);
-    };
+    // For CSS animation, we only need to duplicate items once to create a seamless loop
+    const displayItems = [...items, ...items];
 
     const CardContent = ({ demo, isMobile = false }: { demo: any, isMobile?: boolean }) => (
         <>
@@ -93,11 +44,11 @@ function ScrollRow({ items, speed = 1, reverse = false }: { items: any[], speed?
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60 z-20 opacity-60 pointer-events-none" />
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/screen:opacity-100 transition-all duration-500 z-30 bg-black/60 backdrop-blur-[4px]">
-                        <Link href={demo.link} target="_blank">
+                        <a href={demo.link} target="_blank" rel="noopener noreferrer">
                             <button className={`${isMobile ? 'px-4 py-2 text-[11px]' : 'px-8 py-4 text-[13px]'} bg-white text-black font-sans font-bold rounded-full shadow-[0_10px_40px_rgba(255,255,255,0.3)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 uppercase tracking-widest`}>
                                 View Demo
                             </button>
-                        </Link>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -120,26 +71,31 @@ function ScrollRow({ items, speed = 1, reverse = false }: { items: any[], speed?
         </>
     );
 
+    const animationClass = reverse ? "animate-portfolio-scroll-reverse" : "animate-portfolio-scroll";
+    const duration = `${Math.max(20, items.length * 8 / speed)}s`;
+
     return (
-        <div className="relative z-30 w-full mb-12 sm:mb-16">
+        <div className="relative z-30 w-full mb-12 sm:mb-16 overflow-hidden">
             <div
-                className="flex overflow-x-hidden no-scrollbar pb-4 sm:pb-8 px-[max(16px,4vw)] cursor-grab active:cursor-grabbing w-full"
-                ref={scrollRef}
+                className="mask-image-gradient"
                 onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => { setIsHovered(false); stopDragging(); }}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={stopDragging}
-                onTouchStart={() => setIsHovered(true)}
-                onTouchEnd={() => setIsHovered(false)}
+                onMouseLeave={() => setIsHovered(false)}
             >
-                <div className="flex gap-4 sm:gap-8 w-max">
+                <div
+                    className={`flex w-max py-4 sm:pb-8 ${animationClass}`}
+                    style={{
+                        animationDuration: duration,
+                        animationPlayState: isHovered ? 'paused' : 'running'
+                    } as React.CSSProperties}
+                >
                     {displayItems.map((demo, i) => (
                         <div
                             key={i}
-                            className="glass-1 p-4 sm:p-6 rounded-[24px] sm:rounded-[32px] relative group overflow-hidden border border-white/10 shrink-0 w-[80vw] sm:w-[50vw] lg:w-[30vw] max-w-[450px] flex flex-col"
+                            className="pr-4 sm:pr-8 shrink-0 w-[80vw] sm:w-[50vw] lg:w-[30vw] max-w-[450px]"
                         >
-                            <CardContent demo={demo} />
+                            <div className="glass-1 p-4 sm:p-6 rounded-[24px] sm:rounded-[32px] relative group overflow-hidden border border-white/10 flex flex-col h-full">
+                                <CardContent demo={demo} />
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -155,12 +111,35 @@ export default function Portfolio() {
         fetch('/api/portfolio')
             .then(res => res.json())
             .then(data => {
-                // Filter by status "ON"
                 const activeDemos = data.filter((d: any) => d.status === "ON" || !d.status);
                 setDemos(activeDemos.sort((a: any, b: any) => (a.order || 0) - (b.order || 0)));
             })
             .catch(console.error);
     }, []);
+
+    if (demos.length === 0) {
+        return (
+            <section className="py-14 relative z-10 overflow-hidden" id="portfolio">
+                <div className="max-w-[1440px] mx-auto px-[max(24px,4vw)] relative">
+                    <div className="mb-20">
+                        <Skeleton className="h-6 w-48 mb-4" />
+                        <Skeleton className="h-12 w-96 mb-6" />
+                        <Skeleton className="h-20 w-full" />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {[1, 2, 3].map(i => (
+                            <div key={i} className="glass-1 p-6 rounded-[32px] border border-white/10 h-full">
+                                <Skeleton className="w-full aspect-[4/3] rounded-2xl mb-6" />
+                                <Skeleton className="h-4 w-24 mb-3" />
+                                <Skeleton className="h-8 w-48 mb-4" />
+                                <Skeleton className="h-16 w-full" />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+    }
 
     const dynamicDemos = demos.filter(d => d.category === "dynamic");
     const staticDemos = demos.filter(d => d.category === "static");

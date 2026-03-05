@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const TECH_LOGOS = [
     { name: "React", url: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
@@ -42,9 +43,12 @@ export default function TrustBar() {
                                 key={index}
                                 className="flex-none flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity duration-300 cursor-none"
                             >
-                                <img
+                                <Image
                                     src={tech.url}
                                     alt={`${tech.name} logo icon`}
+                                    width={40}
+                                    height={40}
+                                    loading="lazy"
                                     className={`h-10 w-auto object-contain ${['Next.js', 'iOS', 'AWS'].includes(tech.name) ? 'invert opacity-80' : ''}`}
                                 />
                                 <span className="font-syne font-bold text-xl tracking-wide">{tech.name}</span>

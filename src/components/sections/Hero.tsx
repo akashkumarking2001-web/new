@@ -1,11 +1,13 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 const Hero3D = dynamic(() => import("./Hero3D"), { ssr: false });
 import LeadFormModal from "../ui/LeadFormModal";
+import Magnetic from "../ui/Magnetic";
 
 export default function Hero() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -136,20 +138,24 @@ export default function Hero() {
                         transition={{ delay: 2.2, duration: 0.6 }}
                         className="flex flex-wrap items-center gap-6 pt-4"
                     >
-                        <button
-                            onClick={() => setIsLeadFormOpen(true)}
-                            className="h-[56px] px-9 rounded-full bg-axo-gradient font-sans font-semibold text-[15px] text-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(123,47,232,0.4)] relative overflow-hidden group"
-                        >
-                            <span className="relative z-10">Start Your Project →</span>
-                            <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </button>
-                        <a href="https://wa.me/918610381533" target="_blank" rel="noopener noreferrer" className="gradient-border flex items-center h-[56px] px-9 rounded-[28px] font-sans font-medium text-[15px] group overflow-hidden">
-                            <span className="relative z-10 text-white group-hover:text-pulse-cyan transition-colors flex items-center gap-2">
-                                <img src="https://img.icons8.com/fluency/48/whatsapp.png" alt="WhatsApp" className="w-6 h-6 object-contain drop-shadow-[0_0_10px_rgba(37,211,102,0.8)]" />
-                                Chat on WhatsApp
-                            </span>
-                            <div className="absolute inset-0 bg-axo-gradient opacity-0 transition-opacity duration-300 group-hover:opacity-15 z-0" />
-                        </a>
+                        <Magnetic>
+                            <button
+                                onClick={() => setIsLeadFormOpen(true)}
+                                className="h-[56px] px-9 rounded-full bg-axo-gradient font-sans font-semibold text-[15px] text-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(123,47,232,0.4)] relative overflow-hidden group"
+                            >
+                                <span className="relative z-10">Start Your Project →</span>
+                                <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </button>
+                        </Magnetic>
+                        <Magnetic>
+                            <a href="https://wa.me/918610381533" target="_blank" rel="noopener noreferrer" className="gradient-border flex items-center h-[56px] px-9 rounded-[28px] font-sans font-medium text-[15px] group overflow-hidden">
+                                <span className="relative z-10 text-white group-hover:text-pulse-cyan transition-colors flex items-center gap-2">
+                                    <Image src="https://img.icons8.com/fluency/48/whatsapp.png" alt="WhatsApp" width={24} height={24} loading="lazy" className="w-6 h-6 object-contain drop-shadow-[0_0_10px_rgba(37,211,102,0.8)]" />
+                                    Chat on WhatsApp
+                                </span>
+                                <div className="absolute inset-0 bg-axo-gradient opacity-0 transition-opacity duration-300 group-hover:opacity-15 z-0" />
+                            </a>
+                        </Magnetic>
                     </motion.div>
 
                 </div>

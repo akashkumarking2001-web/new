@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { WhatsappLogo, DeviceMobile, ChatText, FloppyDisk } from "@phosphor-icons/react";
+import { WhatsappLogo, DeviceMobile, ChatText, FloppyDisk, InstagramLogo } from "@phosphor-icons/react";
 
 export default function SettingsAdmin() {
     const [settings, setSettings] = useState({
         whatsappNumber: "",
         whatsappMessage: "",
-        whatsappLink: ""
+        whatsappLink: "",
+        instagramLink: ""
     });
     const [status, setStatus] = useState<"idle" | "saving" | "success" | "error">("idle");
 
@@ -49,6 +50,7 @@ export default function SettingsAdmin() {
             <h2 className="text-xl font-bold mb-8 text-white">Global Site Settings</h2>
 
             <div className="space-y-8">
+                {/* WhatsApp Section */}
                 <div className="glass-1 p-8 rounded-2xl border border-white/5 bg-gradient-to-br from-white/[0.02] to-transparent">
                     <div className="flex items-center gap-3 mb-6">
                         <div className="p-2 bg-[#25D366]/10 rounded-lg text-[#25D366]">
@@ -82,7 +84,7 @@ export default function SettingsAdmin() {
                                 value={settings.whatsappLink}
                                 onChange={(e) => setSettings({ ...settings, whatsappLink: e.target.value })}
                                 className="w-full h-12 bg-void border border-white/10 rounded-xl px-4 text-white font-sans text-sm focus:outline-none focus:border-pulse-cyan transition-colors"
-                                placeholder="https://wa.me/918610381533?text=Hello"
+                                placeholder="https://wa.me/918610381533"
                             />
                         </div>
 
@@ -95,6 +97,35 @@ export default function SettingsAdmin() {
                                     onChange={(e) => setSettings({ ...settings, whatsappMessage: e.target.value })}
                                     className="w-full h-24 bg-void border border-white/10 rounded-xl pl-12 pr-4 pt-4 text-white font-sans text-sm focus:outline-none focus:border-pulse-cyan transition-colors resize-none"
                                     placeholder="Write the default message here..."
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Social Section */}
+                <div className="glass-1 p-8 rounded-2xl border border-white/5 bg-gradient-to-br from-white/[0.02] to-transparent">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="p-2 bg-pulse-violet/10 rounded-lg text-pulse-violet">
+                            <InstagramLogo size={24} weight="fill" />
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-bold text-white">Social Media</h3>
+                            <p className="text-xs text-text-tertiary">Configure Instagram and other social links.</p>
+                        </div>
+                    </div>
+
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block font-sans text-xs uppercase tracking-wider text-text-tertiary mb-2">Instagram Profile Link</label>
+                            <div className="relative">
+                                <InstagramLogo className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary" size={18} />
+                                <input
+                                    type="text"
+                                    value={settings.instagramLink}
+                                    onChange={(e) => setSettings({ ...settings, instagramLink: e.target.value })}
+                                    className="w-full h-12 bg-void border border-white/10 rounded-xl pl-12 pr-4 text-white font-sans text-sm focus:outline-none focus:border-pulse-cyan transition-colors"
+                                    placeholder="https://www.instagram.com/axosoul_/"
                                 />
                             </div>
                         </div>

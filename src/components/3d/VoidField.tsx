@@ -20,7 +20,7 @@ export default function VoidField() {
         window.addEventListener("resize", resize);
 
         // Particle system using 2D canvas (no WebGL)
-        const COUNT = 800;
+        const COUNT = 250;
         const particles: { x: number; y: number; vx: number; vy: number; r: number; color: string; opacity: number }[] = [];
         const colors = ["#00C8FF", "#7B2FE8", "#3B6EFF", "#00C8FF", "#7B2FE8"];
 

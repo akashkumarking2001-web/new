@@ -14,7 +14,17 @@ export default function FreeBonusModal({ isOpen, onClose }: FreeBonusModalProps)
     const [mounted, setMounted] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
-    useEffect(() => setMounted(true), []);
+    useEffect(() => {
+        setMounted(true);
+        if (isOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "unset";
+        }
+        return () => {
+            document.body.style.overflow = "unset";
+        };
+    }, [isOpen]);
 
     const [formData, setFormData] = useState({
         fullName: "",
@@ -156,13 +166,13 @@ export default function FreeBonusModal({ isOpen, onClose }: FreeBonusModalProps)
 
                                         <div className="flex items-center gap-4">
                                             <a
-                                                href="https://www.instagram.com/axosoul.in/"
+                                                href="https://www.instagram.com/axosoul_?igsh=ZDdubGFvYzJ2bXkz"
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="flex items-center gap-2 px-4 py-2 bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] rounded-xl text-white font-sans text-xs font-bold hover:scale-105 transition-transform"
                                             >
                                                 <InstagramLogo size={20} weight="bold" />
-                                                Follow @axosoul.in
+                                                Follow @axosoul_
                                             </a>
                                             <div className="flex-1">
                                                 <input

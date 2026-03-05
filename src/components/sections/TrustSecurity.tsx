@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ShieldCheck, CloudCheck, LockKey, Browser } from "@phosphor-icons/react";
+import Image from "next/image";
 
 const PILLARS = [
     {
@@ -58,7 +59,14 @@ export default function TrustSecurity() {
                         <div className="flex -space-x-4">
                             {[1, 2, 3].map(i => (
                                 <div key={i} className="w-12 h-12 rounded-full border-2 border-[#0A0A0E] glass-2 flex items-center justify-center relative overflow-hidden">
-                                    <img src={`https://i.pravatar.cc/100?u=dev${i}`} alt="Dev" className="w-full h-full object-cover" />
+                                    <Image
+                                        src={`https://i.pravatar.cc/100?u=dev${i}`}
+                                        alt={`Developer ${i}`}
+                                        width={48}
+                                        height={48}
+                                        loading="lazy"
+                                        className="w-full h-full object-cover"
+                                    />
                                 </div>
                             ))}
                             <div className="w-12 h-12 rounded-full border-2 border-[#0A0A0E] bg-pulse-violet flex items-center justify-center text-[11px] font-mono text-white relative z-10">

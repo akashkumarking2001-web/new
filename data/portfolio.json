@@ -1,5 +1,22 @@
 [
   {
+    "name": "Interactive Portfolio",
+    "category": "dynamic",
+    "type": "Elite Developer Showcase",
+    "desc": "A high-performance, interactive developer portfolio featuring 3D physics, glassmorphism, and smooth motion transitions.",
+    "features": [
+      "3D Physics Lanyard",
+      "Interactive Dock",
+      "Glass UI System"
+    ],
+    "link": "/demos/interactive-portfolio/index.html",
+    "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=800",
+    "accent": "#00C8FF",
+    "bg": "#000000",
+    "order": 1,
+    "status": "ON"
+  },
+  {
     "name": "Sale Track Dashboard",
     "category": "static",
     "type": "Sales Intelligence",
@@ -26,7 +43,7 @@
       "Neon Accents",
       "Sticky Elements"
     ],
-    "link": "/foodano-demo/main_file/foodano-ltr/index.html",
+    "link": "/demos/foodano/index.html",
     "image": "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=800",
     "accent": "#00FF00",
     "bg": "#000000",

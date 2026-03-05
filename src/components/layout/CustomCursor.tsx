@@ -27,16 +27,20 @@ export default function CustomCursor() {
             dotY.set(e.clientY - 3);
             mouseX.set(e.clientX - 19);
             mouseY.set(e.clientY - 19);
+
+            // Optimized hover detection
+            const target = e.target as HTMLElement;
+            const isClickable = target.closest('a, button, [role="button"], .cursor-pointer');
+            setCursorState(isClickable ? "hover" : "default");
         };
 
         const handleMouseDown = () => setClicked(true);
         const handleMouseUp = () => setClicked(false);
 
-        window.addEventListener("mousemove", handleMouseMove);
+        // Passive listener for performance
+        window.addEventListener("mousemove", handleMouseMove, { passive: true });
         window.addEventListener("mousedown", handleMouseDown);
         window.addEventListener("mouseup", handleMouseUp);
-
-        // Add dataset listener logic here later to change cursor styles for hover
 
         return () => {
             window.removeEventListener("mousemove", handleMouseMove);

@@ -1,16 +1,15 @@
 "use client";
 
-import React, { useRef } from "react";
+import { useRef, useEffect, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { useInView } from "framer-motion";
 import * as THREE from "three";
 import { EffectComposer, Bloom, ChromaticAberration } from "@react-three/postprocessing";
 import { WebGLContextCleaner } from "../3d/WebGLCleanup";
 
 function DigitalHeart() {
     const heartRef = useRef<THREE.Mesh>(null);
-
-    // Generate a basic heart shape geometry
-    const geometry = React.useMemo(() => {
+    const geometry = useMemo(() => {
         const x = 0, y = 0;
         const heartShape = new THREE.Shape();
         heartShape.moveTo(x + 25, y + 25);
@@ -21,8 +20,16 @@ function DigitalHeart() {
         heartShape.bezierCurveTo(x + 80, y + 35, x + 80, y, x + 50, y);
         heartShape.bezierCurveTo(x + 35, y, x + 25, y + 25, x + 25, y + 25);
 
-        const geo = new THREE.ShapeGeometry(heartShape);
+        const geo = new THREE.ExtrudeGeometry(heartShape, {
+            depth: 8,
+            bevelEnabled: true,
+            bevelSegments: 3,
+            steps: 2,
+            bevelSize: 1,
+            bevelThickness: 1
+        });
         geo.center();
+
         return geo;
     }, []);
 
@@ -30,9 +37,12 @@ function DigitalHeart() {
         if (heartRef.current) {
             heartRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
             heartRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.2;
-            const scaleFactor = state.size.width < 768 ? 0.018 : 0.03;
+            heartRef.current.rotation.z = Math.PI; // Flip heart correctly without breaking normals
+
+            // Mobile responsive scale
+            const baseFactor = state.size.width < 768 ? 0.015 : 0.025;
             const pulse = 1 + Math.sin(state.clock.elapsedTime * 4) * 0.03;
-            heartRef.current.scale.set(pulse * scaleFactor, -pulse * scaleFactor, pulse * scaleFactor);
+            heartRef.current.scale.setScalar(pulse * baseFactor);
         }
     });
 
@@ -42,12 +52,12 @@ function DigitalHeart() {
                 <meshPhysicalMaterial
                     color="#7B2FE8"
                     emissive="#3B6EFF"
-                    emissiveIntensity={0.3}
+                    emissiveIntensity={0.4}
                     roughness={0.1}
-                    metalness={0.4}
-                    transmission={0.3}
+                    metalness={0.6}
+                    transmission={0.4}
                     transparent
-                    opacity={0.8}
+                    opacity={0.85}
                     side={THREE.DoubleSide}
                 />
             </mesh>
@@ -58,7 +68,7 @@ function DigitalHeart() {
 function OrbitRings() {
     const ringsRef = useRef<THREE.Group>(null);
 
-    useFrame(() => {
+    useFrame((state) => {
         if (ringsRef.current) {
             ringsRef.current.children[0].rotation.x += 0.01;
             ringsRef.current.children[1].rotation.y += 0.015;
@@ -85,30 +95,36 @@ function OrbitRings() {
 }
 
 export default function Hero3D() {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const isInView = useInView(containerRef, { margin: "200px" });
+
     return (
-        <div className="w-full relative h-[350px] sm:h-[450px] lg:h-[600px]">
+        <div ref={containerRef} className="w-full relative h-[350px] sm:h-[450px] lg:h-[600px]">
             <Canvas
                 camera={{ position: [0, 0, 8], fov: 50 }}
                 dpr={[1, 1.5]}
-                gl={{ antialias: false, powerPreference: "high-performance", alpha: true }}
+                gl={{ antialias: true, powerPreference: "high-performance", failIfMajorPerformanceCaveat: true, alpha: true }}
             >
-                <WebGLContextCleaner />
-                <ambientLight intensity={0.5} />
-                <pointLight position={[10, 10, 10]} intensity={1} />
+                {isInView && (
+                    <>
+                        <WebGLContextCleaner />
+                        <ambientLight intensity={0.5} />
+                        <pointLight position={[10, 10, 10]} intensity={1} />
 
-                <DigitalHeart />
-                <OrbitRings />
+                        <DigitalHeart />
+                        <OrbitRings />
 
-                <EffectComposer multisampling={0}>
-                    <Bloom luminanceThreshold={0.2} intensity={2.5} />
-                    <ChromaticAberration
-                        radialModulation={false}
-                        modulationOffset={0}
-                        offset={[0.002, 0.002] as any}
-                    />
-                </EffectComposer>
+                        <EffectComposer multisampling={0}>
+                            <Bloom luminanceThreshold={0.2} intensity={2.5} />
+                            <ChromaticAberration
+                                radialModulation={false}
+                                modulationOffset={0}
+                                offset={[0.002, 0.002] as any}
+                            />
+                        </EffectComposer>
+                    </>
+                )}
             </Canvas>
         </div>
     );
 }
-

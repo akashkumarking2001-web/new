@@ -19,6 +19,8 @@ const Estimator = dynamic(() => import("@/components/sections/Estimator"), { ssr
 const TrustSecurity = dynamic(() => import("@/components/sections/TrustSecurity"), { ssr: false });
 const BlogHub = dynamic(() => import("@/components/sections/BlogHub"), { ssr: false });
 
+const Founder = dynamic(() => import("@/components/sections/Founder"), { ssr: false });
+
 export default function Home() {
   return (
     <main className="relative w-full">
@@ -29,6 +31,7 @@ export default function Home() {
         <Hero />
         <TrustBar />
         <AboutVision />
+        <Founder />
         <Services />
         <ProcessTimeline />
         <TechStack />

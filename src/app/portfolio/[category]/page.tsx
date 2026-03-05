@@ -68,14 +68,16 @@ export default function CategoryPage({ params }: { params: { category: string } 
                                         src={demo.image}
                                         alt={demo.name}
                                         fill
+                                        loading="lazy"
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                         className="object-cover opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all duration-[1.5s]"
                                     />
                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
-                                        <Link href={demo.link} target="_blank">
+                                        <a href={demo.link} target="_blank" rel="noopener noreferrer">
                                             <button className="px-8 py-4 bg-white text-black font-bold rounded-full uppercase tracking-widest text-[12px] hover:scale-105 active:scale-95 transition-all">
                                                 Preview Demo
                                             </button>
-                                        </Link>
+                                        </a>
                                     </div>
                                 </div>
 

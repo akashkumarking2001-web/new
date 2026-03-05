@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useMemo } from "react";
+import Image from "next/image";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { Html, Float, PerspectiveCamera, Stars } from "@react-three/drei";
@@ -78,7 +79,7 @@ function Node({ tech, setHovered }: any) {
                 onPointerOver={(e) => { e.stopPropagation(); setHovered(tech); document.body.style.cursor = "pointer"; }}
                 onPointerOut={() => { setHovered(null); document.body.style.cursor = "auto"; }}
             >
-                {/* Crystal Geometry */}
+                {/* Crystal Geometry - Low poly for performance */}
                 <icosahedronGeometry args={[0.35 + (tech.orbit * 0.05), 0]} />
                 <meshPhysicalMaterial
                     color={tech.color}
@@ -113,9 +114,12 @@ function CenterSystem() {
             <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
                 <Html center transform scale={0.8} rotation={[0, 0, 0]}>
                     <div className="w-[300px] pointer-events-none select-none">
-                        <img
+                        <Image
                             src="/AxoSoul.png"
                             alt="AxoSoul"
+                            width={300}
+                            height={150}
+                            loading="lazy"
                             className="w-full h-auto drop-shadow-[0_0_50px_rgba(123,47,232,0.6)]"
                         />
                     </div>
@@ -124,7 +128,7 @@ function CenterSystem() {
 
             {/* Shield / Core Glow */}
             <mesh ref={shieldRef}>
-                <sphereGeometry args={[2.8, 32, 32]} />
+                <sphereGeometry args={[2.8, 16, 16]} />
                 <meshStandardMaterial
                     color="#7B2FE8"
                     transparent
@@ -149,8 +153,8 @@ function TechContent() {
             <pointLight position={[10, 10, 10]} intensity={1} color="#00C8FF" />
             <pointLight position={[-10, -10, -10]} intensity={1} color="#FF6B35" />
 
-            {/* Stars background inside canvas */}
-            <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+            {/* Stars background inside canvas - Reduced count for performance */}
+            <Stars radius={100} depth={50} count={1200} factor={4} saturation={0} fade speed={0.5} />
 
             <CenterSystem />
 
@@ -185,7 +189,7 @@ function TechContent() {
             {[1, 2, 3].map(orbit => (
                 <group key={orbit}>
                     <mesh rotation={[Math.PI / 2 + (orbit - 1) * 0.3, 0, (orbit - 1) * 0.15]}>
-                        <ringGeometry args={[orbit * 4 - 0.02, orbit * 4 + 0.02, 128]} />
+                        <ringGeometry args={[orbit * 4 - 0.02, orbit * 4 + 0.02, 64]} />
                         <meshBasicMaterial color="#ffffff" transparent opacity={0.06} side={THREE.DoubleSide} />
                     </mesh>
                 </group>
@@ -227,8 +231,13 @@ export default function TechStack() {
 
             <div className="w-full h-[750px] relative z-10 cursor-crosshair">
                 <Canvas
+                    camera={{ position: [0, 0, 15], fov: 45 }}
                     dpr={1}
-                    gl={{ antialias: false, powerPreference: "high-performance", alpha: true }}
+                    gl={{
+                        antialias: false,
+                        powerPreference: "high-performance",
+                        failIfMajorPerformanceCaveat: true
+                    }}
                 >
                     <TechContent />
                 </Canvas>

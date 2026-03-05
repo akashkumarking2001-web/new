@@ -12,9 +12,12 @@ function Logo() {
     return (
         <div className="relative flex items-center group cursor-none">
             <div className="flex items-center transition-transform duration-300 group-hover:scale-105 py-2">
-                <img
+                <Image
                     src="/AxoSoul.png"
                     alt="AxoSoul Logo"
+                    width={150}
+                    height={100}
+                    priority
                     className="h-[100px] md:h-[100px] lg:h-[120px] w-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
                 />
             </div>
@@ -53,19 +56,15 @@ export default function Navigation() {
                         Home
                         <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-axo-gradient transition-all duration-300 group-hover:w-full" />
                     </Link>
-                    <div
-                        className="flex items-center gap-1 hover:text-white transition-colors cursor-none relative group h-full py-6"
-                        onMouseEnter={() => setServicesOpen(true)}
-                    >
+                    <Link href="/#services" className="hover:text-white transition-colors relative group">
                         Services
-                        <span className="text-[10px] opacity-70">▼</span>
-                        <span className="absolute bottom-[20px] left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-axo-gradient transition-all duration-300 group-hover:w-full" />
-                    </div>
-                    <Link href="/about" className="hover:text-white transition-colors relative group">
+                        <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-axo-gradient transition-all duration-300 group-hover:w-full" />
+                    </Link>
+                    <Link href="/#about" className="hover:text-white transition-colors relative group">
                         About Us
                         <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-axo-gradient transition-all duration-300 group-hover:w-full" />
                     </Link>
-                    <Link href="/portfolio" className="hover:text-white transition-colors relative group">
+                    <Link href="/#portfolio" className="hover:text-white transition-colors relative group">
                         Portfolio
                         <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-axo-gradient transition-all duration-300 group-hover:w-full" />
                     </Link>
@@ -117,8 +116,8 @@ export default function Navigation() {
                         className="absolute top-full left-0 w-full glass-3 border-t border-white/10 lg:hidden flex flex-col p-6 gap-6 shadow-2xl"
                     >
                         <Link href="/" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">Home</Link>
-                        <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">About Us</Link>
-                        <Link href="/portfolio" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">Portfolio</Link>
+                        <Link href="/#about" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">About Us</Link>
+                        <Link href="/#portfolio" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">Portfolio</Link>
                         <Link href="/blog" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">Blog</Link>
 
                         <button
@@ -137,10 +136,10 @@ export default function Navigation() {
                         <div className="pt-4 border-t border-white/10 w-full">
                             <h4 className="text-white/70 text-sm font-semibold mb-4 uppercase tracking-wider">Services</h4>
                             <div className="grid grid-cols-2 gap-4">
-                                <Link href="#" onClick={() => setMobileMenuOpen(false)} className="text-white text-sm hover:text-pulse-cyan">Web Development</Link>
-                                <Link href="#" onClick={() => setMobileMenuOpen(false)} className="text-white text-sm hover:text-pulse-violet">Mobile Apps</Link>
-                                <Link href="#" onClick={() => setMobileMenuOpen(false)} className="text-white text-sm hover:text-pulse-orange">UI/UX Design</Link>
-                                <Link href="#" onClick={() => setMobileMenuOpen(false)} className="text-white text-sm hover:text-pulse-blue">Digital Marketing</Link>
+                                <Link href="/#services" onClick={() => setMobileMenuOpen(false)} className="text-white text-sm hover:text-pulse-cyan">Web Development</Link>
+                                <Link href="/#services" onClick={() => setMobileMenuOpen(false)} className="text-white text-sm hover:text-pulse-violet">Mobile Apps</Link>
+                                <Link href="/#services" onClick={() => setMobileMenuOpen(false)} className="text-white text-sm hover:text-pulse-orange">UI/UX Design</Link>
+                                <Link href="/#services" onClick={() => setMobileMenuOpen(false)} className="text-white text-sm hover:text-pulse-blue">Digital Marketing</Link>
                             </div>
                         </div>
                         <Link

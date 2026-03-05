@@ -66,7 +66,7 @@ export default function AboutVision() {
     const words = text.split(" ");
 
     return (
-        <section ref={containerRef} className="py-16 relative z-10 flex flex-col justify-center overflow-hidden">
+        <section id="about" ref={containerRef} className="py-16 relative z-10 flex flex-col justify-center overflow-hidden">
 
             {/* 3D Background */}
             <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-60">

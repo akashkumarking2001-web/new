@@ -7,12 +7,46 @@ import Link from "next/link";
 import { blogs } from "@/data/blogs";
 import Image from "next/image";
 
+import { Skeleton } from "@/components/ui/Skeleton";
+import { useState, useEffect } from "react";
+
 export default function BlogHub() {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        // Simulate loading for better UX
+        const timer = setTimeout(() => setIsLoading(false), 800);
+        return () => clearTimeout(timer);
+    }, []);
+
     // Only showcase the latest 3 blogs on the homepage
     const recentBlogs = blogs.slice(0, 3);
 
+    if (isLoading) {
+        return (
+            <section className="py-24 relative z-10 w-full overflow-hidden" id="blog">
+                <div className="max-w-[1440px] mx-auto px-[max(24px,4vw)] relative z-20">
+                    <div className="mb-16">
+                        <Skeleton className="h-10 w-64 mb-4" />
+                        <Skeleton className="h-6 w-full max-w-md" />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {[1, 2, 3].map(i => (
+                            <div key={i} className="pb-8 flex flex-col h-full border-b border-white/10">
+                                <Skeleton className="w-full h-[240px] rounded-2xl mb-6" />
+                                <Skeleton className="h-4 w-24 mb-4" />
+                                <Skeleton className="h-8 w-full mb-3" />
+                                <Skeleton className="h-16 w-full" />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
     return (
-        <section className="py-24 relative z-10 w-full overflow-hidden" id="insights">
+        <section className="py-24 relative z-10 w-full overflow-hidden" id="blog">
             <div className="max-w-[1440px] mx-auto px-[max(24px,4vw)] relative z-20">
 
                 {/* Header */}

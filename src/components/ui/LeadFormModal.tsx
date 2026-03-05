@@ -12,7 +12,17 @@ interface LeadFormModalProps {
 
 export default function LeadFormModal({ isOpen, onClose }: LeadFormModalProps) {
     const [mounted, setMounted] = useState(false);
-    useEffect(() => setMounted(true), []);
+    useEffect(() => {
+        setMounted(true);
+        if (isOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "unset";
+        }
+        return () => {
+            document.body.style.overflow = "unset";
+        };
+    }, [isOpen]);
 
     const [formData, setFormData] = useState({
         name: "",
