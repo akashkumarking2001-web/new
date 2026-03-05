@@ -1,0 +1,74 @@
+﻿
+> axosoul@0.1.0 build
+> next build
+
+  Γû▓ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ Γ£ô Compiled successfully
+   Skipping validation of types
+   Skipping linting
+   Collecting page data ...
+   Generating static pages (0/47) ...
+   Generating static pages (11/47) 
+   Generating static pages (23/47) 
+   Generating static pages (35/47) 
+ Γ£ô Generating static pages (47/47)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                                      Size     First Load JS
+Γöî Γùï /                                                            90.1 kB         514 kB
+Γö£ Γùï /_not-found                                                  880 B          88.5 kB
+Γö£ Γùï /admin                                                       15.2 kB         103 kB
+Γö£ ╞Æ /api/blogs                                                   0 B                0 B
+Γö£ ╞Æ /api/bonuses                                                 0 B                0 B
+Γö£ ╞Æ /api/leads                                                   0 B                0 B
+Γö£ ╞Æ /api/portfolio                                               0 B                0 B
+Γö£ ╞Æ /api/pricing                                                 0 B                0 B
+Γö£ ╞Æ /api/settings                                                0 B                0 B
+Γö£ Γùï /blog                                                        224 B           164 kB
+Γö£ ΓùÅ /blog/[slug]                                                 224 B           164 kB
+Γö£   Γö£ /blog/how-to-choose-the-right-tech-stack-for-your-startup
+Γö£   Γö£ /blog/the-impact-of-ai-on-digital-marketing
+Γö£   Γö£ /blog/why-native-ios-android-apps-outperform-web-wrappers
+Γö£   Γöö [+3 more paths]
+Γö£ Γùï /contact                                                     946 B           143 kB
+Γö£ Γùï /demo/aura                                                   4.7 kB          143 kB
+Γö£ Γùï /demo/delizio                                                16.1 kB         157 kB
+Γö£ Γùï /demo/eunoea                                                 9.9 kB          150 kB
+Γö£ Γùï /demo/farmora                                                9.49 kB         150 kB
+Γö£ Γùï /demo/impeccify                                              7.28 kB         145 kB
+Γö£ Γùï /demo/lawtix                                                 13.5 kB         151 kB
+Γö£ Γùï /demo/lumina                                                 5.24 kB         149 kB
+Γö£ Γùï /demo/nexus                                                  6.75 kB         376 kB
+Γö£ Γùï /demo/noten                                                  8.32 kB         150 kB
+Γö£ Γùï /demo/noten/about                                            3.33 kB         144 kB
+Γö£ Γùï /demo/noten/collections                                      3.35 kB         144 kB
+Γö£ Γùï /demo/noten/contact                                          6.2 kB          147 kB
+Γö£ Γùï /demo/noten/privacy                                          3.35 kB         144 kB
+Γö£ Γùï /demo/pulse                                                  4.23 kB         146 kB
+Γö£ Γùï /demo/quantum                                                4.6 kB          149 kB
+Γö£ Γùï /demo/regalia                                                6.95 kB         150 kB
+Γö£ Γùï /demo/regalia/about                                          1.67 kB         145 kB
+Γö£ Γùï /demo/regalia/collections                                    1.46 kB         145 kB
+Γö£ Γùï /demo/regalia/contact                                        1.56 kB         145 kB
+Γö£ Γùï /demo/regalia/privacy                                        1.22 kB         144 kB
+Γö£ Γùï /demo/velocity                                               9.15 kB         147 kB
+Γö£ Γùï /demo/zenith                                                 3.6 kB          148 kB
+Γö£ Γùï /portfolio                                                   422 B          88.1 kB
+Γö£ ╞Æ /portfolio/[category]                                        2.73 kB         166 kB
+Γö£ Γùï /privacy-policy                                              3.49 kB         145 kB
+Γö£ Γùï /robots.txt                                                  0 B                0 B
+Γö£ Γùï /sitemap.xml                                                 0 B                0 B
+Γöö Γùï /terms-and-conditions                                        1.93 kB         144 kB
++ First Load JS shared by all                                    87.6 kB
+  Γö£ chunks/2117-25fb466aa699ac2f.js                              31.9 kB
+  Γö£ chunks/fd9d1056-aae3c195ffa3f415.js                          53.6 kB
+  Γöö other shared chunks (total)                                  2.1 kB
+
+
+Γùï  (Static)   prerendered as static content
+ΓùÅ  (SSG)      prerendered as static HTML (uses getStaticProps)
+╞Æ  (Dynamic)  server-rendered on demand
+

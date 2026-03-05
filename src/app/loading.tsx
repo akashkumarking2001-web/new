@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function Loading() {
     return (
@@ -30,9 +31,12 @@ export default function Loading() {
                     }}
                     className="absolute inset-0 border-t-2 border-pulse-cyan rounded-full border-opacity-40"
                 />
-                <img
+                <Image
                     src="/AxoSoul.png"
                     alt="Loading..."
+                    width={96}
+                    height={96}
+                    priority
                     className="w-full h-full object-contain relative z-10 opacity-80"
                 />
             </div>

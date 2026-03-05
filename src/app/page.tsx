@@ -21,6 +21,8 @@ const BlogHub = dynamic(() => import("@/components/sections/BlogHub"), { ssr: fa
 
 const Founder = dynamic(() => import("@/components/sections/Founder"), { ssr: false });
 
+import LazyLoad from "@/components/ui/LazyLoad";
+
 export default function Home() {
   return (
     <main className="relative w-full">
@@ -30,19 +32,47 @@ export default function Home() {
       <div className="relative z-10 w-full overflow-hidden">
         <Hero />
         <TrustBar />
-        <AboutVision />
-        <Founder />
-        <Services />
-        <ProcessTimeline />
-        <TechStack />
-        <WhyChoose />
-        <Portfolio />
-        <Testimonials />
-        <Pricing />
-        <Estimator />
-        <TrustSecurity />
-        <BlogHub />
-        <FinalCTA />
+
+        <LazyLoad threshold={0.01}>
+          <AboutVision />
+        </LazyLoad>
+        <LazyLoad threshold={0.01}>
+          <Founder />
+        </LazyLoad>
+        <LazyLoad threshold={0.01}>
+          <Services />
+        </LazyLoad>
+        <LazyLoad threshold={0.01}>
+          <ProcessTimeline />
+        </LazyLoad>
+        <LazyLoad threshold={0.01}>
+          <TechStack />
+        </LazyLoad>
+        <LazyLoad threshold={0.01}>
+          <WhyChoose />
+        </LazyLoad>
+        <LazyLoad threshold={0.01}>
+          <Portfolio />
+        </LazyLoad>
+        <LazyLoad threshold={0.01}>
+          <Testimonials />
+        </LazyLoad>
+        <LazyLoad threshold={0.01}>
+          <Pricing />
+        </LazyLoad>
+        <LazyLoad threshold={0.01}>
+          <Estimator />
+        </LazyLoad>
+        <LazyLoad threshold={0.01}>
+          <TrustSecurity />
+        </LazyLoad>
+        <LazyLoad threshold={0.01}>
+          <BlogHub />
+        </LazyLoad>
+        <LazyLoad threshold={0.01}>
+          <FinalCTA />
+        </LazyLoad>
+
         <Footer />
       </div>
     </main>

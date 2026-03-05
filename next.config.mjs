@@ -19,7 +19,6 @@ const nextConfig = {
                 hostname: 'cdn.jsdelivr.net',
             }
         ],
-        unoptimized: true
     },
     eslint: {
         ignoreDuringBuilds: true,
