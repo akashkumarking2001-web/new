@@ -1,0 +1,42 @@
+{
+  "name": "vestige-mcp-server",
+  "version": "2.0.0",
+  "description": "Vestige MCP Server — Cognitive memory for AI with FSRS-6, 3D dashboard, and 29 brain modules",
+  "bin": {
+    "vestige-mcp": "bin/vestige-mcp.js",
+    "vestige": "bin/vestige.js"
+  },
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js"
+  },
+  "keywords": [
+    "mcp",
+    "claude",
+    "ai",
+    "memory",
+    "vestige",
+    "fsrs",
+    "spaced-repetition",
+    "neuroscience",
+    "cognitive",
+    "3d-visualization"
+  ],
+  "author": "Sam Valladares",
+  "license": "AGPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samvallad33/vestige.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ]
+}

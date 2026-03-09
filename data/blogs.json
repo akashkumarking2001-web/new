@@ -1,0 +1,23 @@
+[
+  {
+    "title": "How We Optimized a Next.js App to Handle 50K Concurrent Users",
+    "cat": "Engineering",
+    "read": "5 min read",
+    "desc": "A deep dive into Edge caching, React Server Components, and connection pooling.",
+    "color": "#00C8FF"
+  },
+  {
+    "title": "Why Your Figma Design Isn't Translating to Code (And How to Fix It)",
+    "cat": "Design System",
+    "read": "4 min read",
+    "desc": "Bridging the gap between UI design tokens and Tailwind configuration architectures.",
+    "color": "#FF6B35"
+  },
+  {
+    "title": "Flutter vs React Native in 2025: An Objective Agency Perspective",
+    "cat": "Mobile Dev",
+    "read": "7 min read",
+    "desc": "We build in both. Here is exactly when we recommend one over the other for our clients.",
+    "color": "#7B2FE8"
+  }
+]

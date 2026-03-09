@@ -1,0 +1,226 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useScroll, motion, useTransform, AnimatePresence } from "framer-motion";
+import { Globe, DeviceMobile, Stack, TrendUp, List, Gift } from "@phosphor-icons/react";
+import FreeBonusModal from "../ui/FreeBonusModal";
+
+import Image from "next/image";
+
+function Logo() {
+    return (
+        <div className="relative flex items-center group cursor-none">
+            <div className="flex items-center transition-transform duration-300 group-hover:scale-105 py-2">
+                <Image
+                    src="/AxoSoul.png"
+                    alt="AxoSoul Logo"
+                    width={150}
+                    height={100}
+                    priority
+                    className="h-[100px] md:h-[100px] lg:h-[120px] w-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                />
+            </div>
+        </div>
+    );
+}
+
+export default function Navigation() {
+    const { scrollY } = useScroll();
+    const [scrolled, setScrolled] = useState(false);
+    const [servicesOpen, setServicesOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [bonusOpen, setBonusOpen] = useState(false);
+
+    useEffect(() => {
+        return scrollY.on("change", (latest) => {
+            setScrolled(latest > 50);
+        });
+    }, [scrollY]);
+
+    useEffect(() => {
+        if (mobileMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+    }, [mobileMenuOpen]);
+
+    return (
+        <header
+            className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 flex items-center ${scrolled ? "h-[72px] glass-1" : "h-[90px] bg-transparent"
+                } px-[max(24px,4vw)]`}
+            onMouseLeave={() => setServicesOpen(false)}
+        >
+            <div className="flex w-full max-w-[1440px] mx-auto items-center justify-between">
+                {/* Left: Logo */}
+                <Link href="/">
+                    <Logo />
+                </Link>
+
+                {/* Center: Links */}
+                <nav className="hidden lg:flex items-center gap-8 font-sans font-medium text-[15px] text-text-secondary">
+                    <Link href="/" className="hover:text-white transition-colors relative group">
+                        Home
+                        <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-axo-gradient transition-all duration-300 group-hover:w-full" />
+                    </Link>
+                    <Link href="/#services" className="hover:text-white transition-colors relative group">
+                        Services
+                        <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-axo-gradient transition-all duration-300 group-hover:w-full" />
+                    </Link>
+                    <Link href="/#about" className="hover:text-white transition-colors relative group">
+                        About Us
+                        <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-axo-gradient transition-all duration-300 group-hover:w-full" />
+                    </Link>
+                    <Link href="/#portfolio" className="hover:text-white transition-colors relative group">
+                        Portfolio
+                        <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-axo-gradient transition-all duration-300 group-hover:w-full" />
+                    </Link>
+                    <Link href="/blog" className="hover:text-white transition-colors relative group">
+                        Blog
+                        <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-axo-gradient transition-all duration-300 group-hover:w-full" />
+                    </Link>
+                    <button
+                        onClick={() => setBonusOpen(true)}
+                        className="flex items-center gap-2 text-pulse-orange hover:text-white transition-colors relative group font-bold animate-pulse"
+                    >
+                        <Gift size={18} weight="bold" />
+                        Free Bonus
+                        <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-pulse-orange transition-all duration-300 group-hover:w-full" />
+                    </button>
+                    <Link href="/contact" className="hover:text-white transition-colors relative group">
+                        Contact
+                        <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-axo-gradient transition-all duration-300 group-hover:w-full" />
+                    </Link>
+                </nav>
+
+                {/* Right: CTA */}
+                <div className="hidden lg:block relative group">
+                    <Link href="/contact" className="gradient-border px-6 py-[10px] text-[14px] font-sans font-medium relative block overflow-hidden rounded-[20px]">
+                        <span className="relative z-10 text-white">Get a Free Quote</span>
+                        <div className="absolute inset-0 bg-axo-gradient opacity-0 transition-opacity duration-300 group-hover:opacity-15 z-0" />
+                    </Link>
+                </div>
+
+                {/* Mobile Menu */}
+                <button
+                    className="lg:hidden text-white relative z-50 p-2"
+                    aria-label="Menu"
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                >
+                    <List size={28} />
+                </button>
+            </div>
+
+            <FreeBonusModal isOpen={bonusOpen} onClose={() => setBonusOpen(false)} />
+
+            {/* Mobile Nav Overlay */}
+            <AnimatePresence>
+                {mobileMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="absolute top-full left-0 w-full glass-3 border-t border-white/10 lg:hidden flex flex-col p-6 gap-6 shadow-2xl"
+                    >
+                        <Link href="/" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">Home</Link>
+                        <Link href="/#about" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">About Us</Link>
+                        <Link href="/#portfolio" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">Portfolio</Link>
+                        <Link href="/blog" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">Blog</Link>
+
+                        <button
+                            onClick={() => {
+                                setMobileMenuOpen(false);
+                                setBonusOpen(true);
+                            }}
+                            className="flex items-center gap-2 text-pulse-orange font-bold text-lg hover:text-white text-left"
+                        >
+                            <Gift size={22} weight="bold" />
+                            Free Bonus
+                        </button>
+
+                        <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="text-white font-sans text-lg font-medium hover:text-pulse-cyan">Contact</Link>
+
+                        <div className="pt-4 border-t border-white/10 w-full">
+                            <h4 className="text-white/70 text-sm font-semibold mb-4 uppercase tracking-wider">Services</h4>
+                            <div className="grid grid-cols-2 gap-4">
+                                <Link href="/#services" onClick={() => setMobileMenuOpen(false)} className="text-white text-sm hover:text-pulse-cyan">Web Development</Link>
+                                <Link href="/#services" onClick={() => setMobileMenuOpen(false)} className="text-white text-sm hover:text-pulse-violet">Mobile Apps</Link>
+                                <Link href="/#services" onClick={() => setMobileMenuOpen(false)} className="text-white text-sm hover:text-pulse-orange">UI/UX Design</Link>
+                                <Link href="/#services" onClick={() => setMobileMenuOpen(false)} className="text-white text-sm hover:text-pulse-blue">Digital Marketing</Link>
+                            </div>
+                        </div>
+                        <Link
+                            href="/contact"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="mt-2 gradient-border px-6 py-3 text-center text-sm font-sans font-medium text-white rounded-[20px]"
+                        >
+                            Get a Free Quote
+                        </Link>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Services Mega Dropdown */}
+            <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{
+                    height: servicesOpen ? "auto" : 0,
+                    opacity: servicesOpen ? 1 : 0,
+                }}
+                className="absolute top-full left-0 w-full glass-3 overflow-hidden border-t-0"
+            >
+                <div className="max-w-[1440px] mx-auto grid grid-cols-4 gap-8 p-10 pt-8 pb-12">
+                    {/* Col 1 */}
+                    <div>
+                        <div className="flex items-center gap-3 mb-4">
+                            <Globe size={24} color="#00C8FF" weight="duotone" />
+                            <h4 className="font-sans font-medium text-white">Web Development</h4>
+                        </div>
+                        <ul className="space-y-3 pl-9">
+                            <li className="text-text-secondary hover:text-pulse-cyan transition-colors text-sm cursor-none">Custom Web Apps</li>
+                            <li className="text-text-secondary hover:text-pulse-cyan transition-colors text-sm cursor-none">E-commerce Platforms</li>
+                            <li className="text-text-secondary hover:text-pulse-cyan transition-colors text-sm cursor-none">Headless CMS</li>
+                        </ul>
+                    </div>
+                    {/* Col 2 */}
+                    <div>
+                        <div className="flex items-center gap-3 mb-4">
+                            <DeviceMobile size={24} color="#7B2FE8" weight="duotone" />
+                            <h4 className="font-sans font-medium text-white">Mobile Apps</h4>
+                        </div>
+                        <ul className="space-y-3 pl-9">
+                            <li className="text-text-secondary hover:text-pulse-violet transition-colors text-sm cursor-none">iOS Native (Swift)</li>
+                            <li className="text-text-secondary hover:text-pulse-violet transition-colors text-sm cursor-none">Android (Kotlin)</li>
+                            <li className="text-text-secondary hover:text-pulse-violet transition-colors text-sm cursor-none">Cross-Platform (Flutter)</li>
+                        </ul>
+                    </div>
+                    {/* Col 3 */}
+                    <div>
+                        <div className="flex items-center gap-3 mb-4">
+                            <Stack size={24} color="#FF6B35" weight="duotone" />
+                            <h4 className="font-sans font-medium text-white">UI/UX Design</h4>
+                        </div>
+                        <ul className="space-y-3 pl-9">
+                            <li className="text-text-secondary hover:text-pulse-orange transition-colors text-sm cursor-none">Prototyping & Wireframes</li>
+                            <li className="text-text-secondary hover:text-pulse-orange transition-colors text-sm cursor-none">User Research</li>
+                            <li className="text-text-secondary hover:text-pulse-orange transition-colors text-sm cursor-none">Design Systems</li>
+                        </ul>
+                    </div>
+                    {/* Col 4 */}
+                    <div>
+                        <div className="flex items-center gap-3 mb-4">
+                            <TrendUp size={24} color="#3B6EFF" weight="duotone" />
+                            <h4 className="font-sans font-medium text-white">Digital Marketing</h4>
+                        </div>
+                        <ul className="space-y-3 pl-9">
+                            <li className="text-text-secondary hover:text-pulse-blue transition-colors text-sm cursor-none">Technical SEO</li>
+                            <li className="text-text-secondary hover:text-pulse-blue transition-colors text-sm cursor-none">Performance Marketing</li>
+                            <li className="text-text-secondary hover:text-pulse-blue transition-colors text-sm cursor-none">Conversion Opt.</li>
+                        </ul>
+                    </div>
+                </div>
+            </motion.div>
+        </header>
+    );
+}

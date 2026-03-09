@@ -1,0 +1,342 @@
+[
+  {
+    "name": "Animated crypto airdrop",
+    "category": "dynamic",
+    "type": "Animated",
+    "desc": "A fluid, transparent interface with glowing elements.",
+    "features": [
+      "3D Glass",
+      "Fluid Layout",
+      "Glowing Effects"
+    ],
+    "link": "#",
+    "image": "/portfolio/animated/d1.png",
+    "accent": "#00C8FF",
+    "bg": "#000000",
+    "order": 1,
+    "status": "ON"
+  },
+  {
+    "name": "Blockchain exchange",
+    "category": "dynamic",
+    "type": "Animated",
+    "desc": "A raw, high-contrast design featuring digital glitch effects.",
+    "features": [
+      "Glitch UI",
+      "High Contrast",
+      "Cyberpunk Style"
+    ],
+    "link": "#",
+    "image": "/portfolio/animated/d2.png",
+    "accent": "#FF00E5",
+    "bg": "#000000",
+    "order": 2,
+    "status": "ON"
+  },
+  {
+    "name": "Physics-Driven Showcase",
+    "category": "dynamic",
+    "type": "Animated",
+    "desc": "Interactive elements that respond to user movement and gravity.",
+    "features": [
+      "Three.js Physics",
+      "Mouse Interaction",
+      "Dynamic Gravity"
+    ],
+    "link": "#",
+    "image": "/portfolio/animated/d3.png",
+    "accent": "#7B2FE8",
+    "bg": "#000000",
+    "order": 3,
+    "status": "ON"
+  },
+  {
+    "name": " futuristic admin panel",
+    "category": "dynamic",
+    "type": "Animated",
+    "desc": "Smooth zooming and panning transitions for a cinematic feel.",
+    "features": [
+      "Cinematic Motion",
+      "Smooth Panning",
+      "Auto-Zoom"
+    ],
+    "link": "#",
+    "image": "/portfolio/animated/d4.png",
+    "accent": "#00FF66",
+    "bg": "#000000",
+    "order": 4,
+    "status": "ON"
+  },
+  {
+    "name": "Animated food order",
+    "category": "dynamic",
+    "type": "Animated",
+    "desc": "Connecting digital dots through user interaction.",
+    "features": [
+      "Node Connections",
+      "Interactive Graphs",
+      "Live Mapping"
+    ],
+    "link": "#",
+    "image": "/portfolio/animated/d5.png",
+    "accent": "#00F2FF",
+    "bg": "#000000",
+    "order": 5,
+    "status": "ON"
+  },
+  {
+    "name": "Premium level food and table booking",
+    "category": "dynamic",
+    "type": "Animated",
+    "desc": "3D depth and parallax for a futuristic navigation.",
+    "features": [
+      "3D Depth",
+      "Parallax Scroll",
+      "Futuristic UI"
+    ],
+    "link": "#",
+    "image": "/portfolio/animated/d6.png",
+    "accent": "#FF3333",
+    "bg": "#000000",
+    "order": 6,
+    "status": "ON"
+  },
+  {
+    "name": "dynamic admin panel ",
+    "category": "dynamic",
+    "type": "Animated",
+    "desc": "Storytelling through dynamic content reveals.",
+    "features": [
+      "Storytelling",
+      "Content Reveal",
+      "Scroll Trigger"
+    ],
+    "link": "#",
+    "image": "/portfolio/animated/d7.png",
+    "accent": "#C9A84C",
+    "bg": "#000000",
+    "order": 7,
+    "status": "ON"
+  },
+  {
+    "name": "Future stick travel agency",
+    "category": "dynamic",
+    "type": "Animated",
+    "desc": "Ever-shifting colors that create a breathing atmosphere.",
+    "features": [
+      "Gradient Motion",
+      "Breathing UI",
+      "Color Flow"
+    ],
+    "link": "#",
+    "image": "/portfolio/animated/d8.png",
+    "accent": "#39ff14",
+    "bg": "#000000",
+    "order": 8,
+    "status": "ON"
+  },
+  {
+    "name": "Premium level tour company",
+    "category": "dynamic",
+    "type": "Animated",
+    "desc": "Perfectly-timed animations for a premium feel.",
+    "features": [
+      "Micro-Interactions",
+      "Premium Feel",
+      "Elite Motion"
+    ],
+    "link": "#",
+    "image": "/portfolio/animated/d9.png",
+    "accent": "#FACC15",
+    "bg": "#000000",
+    "order": 9,
+    "status": "ON"
+  },
+  {
+    "name": "Hill station guide",
+    "category": "static",
+    "type": "Static",
+    "desc": "Clean lines and strict grid layouts for maximum clarity.",
+    "features": [
+      "Clean Grid",
+      "High Precision",
+      "Minimal UI"
+    ],
+    "link": "#",
+    "image": "/portfolio/static/d1.png",
+    "accent": "#FFFFFF",
+    "bg": "#111111",
+    "order": 1,
+    "status": "ON"
+  },
+  {
+    "name": "premium coffee shop",
+    "category": "static",
+    "type": "Static",
+    "desc": "Large typography and balanced whitespace for readability.",
+    "features": [
+      "Typography-Focus",
+      "Editorial Style",
+      "Balanced Layout"
+    ],
+    "link": "#",
+    "image": "/portfolio/static/d2.png",
+    "accent": "#F97316",
+    "bg": "#FFFFFF",
+    "order": 2,
+    "status": "ON"
+  },
+  {
+    "name": "Modern watch company ",
+    "category": "static",
+    "type": "Static",
+    "desc": "Strategically placed elements for high business growth.",
+    "features": [
+      "Conversion UX",
+      "Business-Growth",
+      "Targeted UI"
+    ],
+    "link": "#",
+    "image": "/portfolio/static/d3.png",
+    "accent": "#52B788",
+    "bg": "#FFFFFF",
+    "order": 3,
+    "status": "ON"
+  },
+  {
+    "name": "Modern watch company ",
+    "category": "static",
+    "type": "Static",
+    "desc": "Unapologetic design with strong personality and contrast.",
+    "features": [
+      "Brutalist Design",
+      "Strong Contrast",
+      "Raw Aesthetic"
+    ],
+    "link": "#",
+    "image": "/portfolio/static/d4.png",
+    "accent": "#F5C842",
+    "bg": "#1E0F05",
+    "order": 4,
+    "status": "ON"
+  },
+  {
+    "name": "luxury watches",
+    "category": "static",
+    "type": "Static",
+    "desc": "High-performance catalog for seamless browsing.",
+    "features": [
+      "Fast Catalog",
+      "Responsive Grid",
+      "Shop UI"
+    ],
+    "link": "#",
+    "image": "/portfolio/static/d5.png",
+    "accent": "#C9A84C",
+    "bg": "#1B4332",
+    "order": 5,
+    "status": "ON"
+  },
+  {
+    "name": "Static e-commerce",
+    "category": "static",
+    "type": "Static",
+    "desc": "Professional, authoritative presence for enterprise clients.",
+    "features": [
+      "Enterprise Ready",
+      "Pro Aesthetic",
+      "Authority"
+    ],
+    "link": "#",
+    "image": "/portfolio/static/d6.png",
+    "accent": "#8B5CF6",
+    "bg": "#F5F3FF",
+    "order": 6,
+    "status": "ON"
+  },
+  {
+    "name": "premium level food order",
+    "category": "static",
+    "type": "Static",
+    "desc": "Lightweight architecture built for peak performance.",
+    "features": [
+      "Lightweight",
+      "High Perf",
+      "Scalable"
+    ],
+    "link": "#",
+    "image": "/portfolio/static/d7.png",
+    "accent": "#EC4899",
+    "bg": "#111827",
+    "order": 7,
+    "status": "ON"
+  },
+  {
+    "name": "Hospital management software",
+    "category": "software",
+    "type": "Software",
+    "desc": "Real-time metrics and complex data visualization hub.",
+    "features": [
+      "Live Metrics",
+      "Data Viz",
+      "Smart Hub"
+    ],
+    "link": "#",
+    "image": "/portfolio/software/I_am_showcasing_images_of_websites_ive_built_on_my_delpmaspu (2).png",
+    "accent": "#10B981",
+    "bg": "#064E3B",
+    "order": 1,
+    "status": "ON"
+  },
+  {
+    "name": "Healthcare management software ",
+    "category": "software",
+    "type": "Software",
+    "desc": "Streamlined management for large-scale operations.",
+    "features": [
+      "Management",
+      "Scaleable Ops",
+      "Admin UI"
+    ],
+    "link": "#",
+    "image": "/portfolio/software/I_am_showcasing_images_of_websites_ive_built_on_my_delpmaspu (3).png",
+    "accent": "#3B82F6",
+    "bg": "#F8FAFC",
+    "order": 2,
+    "status": "ON"
+  },
+  {
+    "name": "hotel management software",
+    "category": "software",
+    "type": "Software",
+    "desc": "Detailed analytics for software-as-a-service platforms.",
+    "features": [
+      "Analytics",
+      "Perf Tracking",
+      "SaaS Hub"
+    ],
+    "link": "#",
+    "image": "/portfolio/software/I_am_showcasing_images_of_websites_ive_built_on_my_delpmaspu (4).png",
+    "accent": "#00D4AA",
+    "bg": "#0A1628",
+    "order": 3,
+    "status": "ON"
+  },
+  {
+    "name": "E-Commerce CRM software",
+    "category": "software",
+    "type": "Software",
+    "desc": "Specialized solutions for healthcare management and tracking.",
+    "features": [
+      "Healthcare",
+      "ERP System",
+      "Med Tracking"
+    ],
+    "link": "#",
+    "image": "/portfolio/software/I_am_showcasing_images_of_websites_ive_built_on_my_delpmaspu (5).png",
+    "accent": "#8B5CF6",
+    "bg": "#000000",
+    "order": 4,
+    "status": "ON"
+  }
+]
