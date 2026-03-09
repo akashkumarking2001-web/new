@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { supabase } from '@/lib/supabase';
 
 const defaultPricing = [
     {
@@ -75,17 +74,12 @@ const defaultPricing = [
 
 export async function GET() {
     try {
-        const dataDir = path.join(process.cwd(), 'data');
-        if (!fs.existsSync(dataDir)) {
-            fs.mkdirSync(dataDir, { recursive: true });
-        }
-        const file = path.join(dataDir, 'pricing.json');
-        if (!fs.existsSync(file)) {
-            fs.writeFileSync(file, JSON.stringify(defaultPricing, null, 2));
+        const { data, error } = await supabase.from('pricing').select('*').order('delay', { ascending: true });
+        if (error || !data || data.length === 0) {
+            await supabase.from('pricing').insert(defaultPricing);
             return NextResponse.json(defaultPricing);
         }
-        const data = fs.readFileSync(file, 'utf8');
-        return NextResponse.json(JSON.parse(data));
+        return NextResponse.json(data);
     } catch {
         return NextResponse.json({ success: false }, { status: 500 });
     }
@@ -94,9 +88,14 @@ export async function GET() {
 export async function POST(req: Request) {
     try {
         const data = await req.json();
-        const file = path.join(process.cwd(), 'data', 'pricing.json');
         if (Array.isArray(data)) {
-            fs.writeFileSync(file, JSON.stringify(data, null, 2));
+            await supabase.from('pricing').delete().not('id', 'is', null);
+            const cleanedData = data.map(item => {
+                const { id, ...rest } = item;
+                return rest;
+            });
+            const { error } = await supabase.from('pricing').insert(cleanedData);
+            if (error) throw error;
             return NextResponse.json({ success: true });
         }
         return NextResponse.json({ success: false }, { status: 400 });

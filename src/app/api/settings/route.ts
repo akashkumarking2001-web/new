@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 import { revalidatePath } from 'next/cache';
+import { supabase } from '@/lib/supabase';
 
 const DEFAULT_SETTINGS = {
     whatsappNumber: "+918610381533",
@@ -13,13 +12,11 @@ const DEFAULT_SETTINGS = {
 
 export async function GET() {
     try {
-        const file = path.join(process.cwd(), 'data', 'settings.json');
-        if (!fs.existsSync(file)) {
+        const { data, error } = await supabase.from('settings').select('*').single();
+        if (error || !data) {
             return NextResponse.json(DEFAULT_SETTINGS);
         }
-        const data = fs.readFileSync(file, 'utf8');
-        const settings = JSON.parse(data);
-        return NextResponse.json({ ...DEFAULT_SETTINGS, ...settings });
+        return NextResponse.json(data);
     } catch {
         return NextResponse.json({ success: false }, { status: 500 });
     }
@@ -28,10 +25,15 @@ export async function GET() {
 export async function POST(req: Request) {
     try {
         const data = await req.json();
-        const dataDir = path.join(process.cwd(), 'data');
-        const file = path.join(dataDir, 'settings.json');
 
-        fs.writeFileSync(file, JSON.stringify(data, null, 2));
+        // Ensure we are updating ID 1
+        const { error } = await supabase
+            .from('settings')
+            .upsert({ id: 1, ...data });
+
+        if (error) {
+            throw error;
+        }
 
         // Revalidate the home page to reflect the new settings
         revalidatePath('/');

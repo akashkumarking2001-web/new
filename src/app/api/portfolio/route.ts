@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { supabase } from '@/lib/supabase';
 
 const defaultPortfolio = [
     {
@@ -147,26 +146,19 @@ const defaultPortfolio = [
         bg: "#050505",
         order: 12
     }
-
 ];
 
 export async function GET() {
     try {
-        const dataDir = path.join(process.cwd(), 'data');
-        if (!fs.existsSync(dataDir)) {
-            fs.mkdirSync(dataDir, { recursive: true });
-        }
+        const { data, error } = await supabase.from('portfolio').select('*').order('order', { ascending: true });
 
-        const file = path.join(dataDir, 'portfolio.json');
-
-        if (!fs.existsSync(file)) {
-            fs.writeFileSync(file, JSON.stringify(defaultPortfolio, null, 2));
+        if (error || !data || data.length === 0) {
+            // Seed defaults if empty
+            await supabase.from('portfolio').insert(defaultPortfolio);
             return NextResponse.json(defaultPortfolio);
         }
-
-        const data = fs.readFileSync(file, 'utf8');
-        return NextResponse.json(JSON.parse(data));
-    } catch (error) {
+        return NextResponse.json(data);
+    } catch {
         return NextResponse.json({ success: false, error: 'Failed' }, { status: 500 });
     }
 }
@@ -175,11 +167,18 @@ export async function POST(req: Request) {
     try {
         const data = await req.json();
 
-        const file = path.join(process.cwd(), 'data', 'portfolio.json');
-
         // Ensure array
         if (Array.isArray(data)) {
-            fs.writeFileSync(file, JSON.stringify(data, null, 2));
+            // Clear existing
+            await supabase.from('portfolio').delete().not('id', 'is', null);
+            // Insert new
+            const cleanedData = data.map(item => {
+                const { id, ...rest } = item;
+                // Don't insert pre-existing ids if they are randomly generated clientside, let db handle or preserve
+                return rest;
+            });
+            const { error } = await supabase.from('portfolio').insert(cleanedData);
+            if (error) throw error;
             return NextResponse.json({ success: true });
         }
         return NextResponse.json({ success: false, error: 'Invalid data format' }, { status: 400 });

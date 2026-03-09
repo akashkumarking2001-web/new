@@ -1,15 +1,17 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { supabase } from '@/lib/supabase';
 
 export async function GET() {
     try {
-        const file = path.join(process.cwd(), 'data', 'leads.json');
-        if (!fs.existsSync(file)) {
+        const { data, error } = await supabase
+            .from('leads')
+            .select('*')
+            .order('createdAt', { ascending: false });
+
+        if (error || !data) {
             return NextResponse.json([]);
         }
-        const data = fs.readFileSync(file, 'utf8');
-        return NextResponse.json(JSON.parse(data));
+        return NextResponse.json(data);
     } catch {
         return NextResponse.json({ success: false }, { status: 500 });
     }
@@ -17,27 +19,16 @@ export async function GET() {
 
 export async function POST(req: Request) {
     try {
-        const data = await req.json();
+        let data = await req.json();
 
-        // Ensure data directory exists
-        const dataDir = path.join(process.cwd(), 'data');
-        if (!fs.existsSync(dataDir)) {
-            fs.mkdirSync(dataDir, { recursive: true });
+        // Check if data is array or object and insert accordingly
+        const { error } = await supabase
+            .from('leads')
+            .insert(Array.isArray(data) ? data : [{ ...data }]);
+
+        if (error) {
+            throw error;
         }
-
-        const file = path.join(dataDir, 'leads.json');
-
-        let leads = [];
-        if (fs.existsSync(file)) {
-            const fileData = fs.readFileSync(file, 'utf8');
-            if (fileData) {
-                leads = JSON.parse(fileData);
-            }
-        }
-
-        leads.unshift({ ...data, createdAt: new Date().toISOString() });
-
-        fs.writeFileSync(file, JSON.stringify(leads, null, 2));
 
         return NextResponse.json({ success: true });
     } catch (error) {
