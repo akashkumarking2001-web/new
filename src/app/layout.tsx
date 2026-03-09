@@ -60,6 +60,11 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  icons: {
+    icon: '/AxoSoul.png',
+    shortcut: '/AxoSoul.png',
+    apple: '/AxoSoul.png',
+  },
 };
 
 const techAgencySchema = {
