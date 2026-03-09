@@ -32,20 +32,20 @@ export default function ClientLogos() {
 
                 {/* Marquee Container */}
                 <div className="w-full relative flex items-center group overflow-hidden mask-image-gradient py-6">
-                    <div className="flex gap-16 items-center whitespace-nowrap w-max animate-trustbar-scroll">
+                    <div className="flex gap-8 md:gap-12 items-center whitespace-nowrap w-max animate-trustbar-scroll">
                         {/* Duplicate lists for infinite scroll effect */}
                         {[...CLIENTS, ...CLIENTS].map((client, index) => (
                             <div
                                 key={index}
-                                className="flex-none flex items-center gap-4 cursor-default"
+                                className="flex-none flex items-center justify-center cursor-default mix-blend-screen opacity-80 hover:opacity-100 transition-opacity duration-300"
                             >
-                                <div className="relative w-[280px] h-[100px] md:w-[320px] md:h-[120px] rounded-xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-300">
+                                <div className="relative w-[180px] h-[70px] md:w-[220px] md:h-[90px] overflow-hidden">
                                     <Image
                                         src={client.url}
                                         alt={`${client.name} logo`}
                                         fill
-                                        sizes="(max-width: 768px) 280px, 320px"
-                                        className="object-contain object-center"
+                                        sizes="(max-width: 768px) 180px, 220px"
+                                        className="object-contain object-center scale-[1.35]"
                                         loading="lazy"
                                     />
                                 </div>
