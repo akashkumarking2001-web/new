@@ -49,6 +49,7 @@ export default function FinalCTA() {
             {/* 3D Background */}
             <div className="absolute inset-0 pointer-events-none opacity-40">
                 <Canvas
+                    frameloop={isInView ? 'always' : 'never'}
                     camera={{ position: [0, 0, 5], fov: 60 }}
                     dpr={[1, 1.5]}
                     gl={{ antialias: true, powerPreference: "high-performance" }}

@@ -91,6 +91,9 @@ const techAgencySchema = {
 };
 
 import FloatingWhatsApp from "@/components/ui/FloatingWhatsApp";
+import dynamic from "next/dynamic";
+
+const VoidField = dynamic(() => import("@/components/3d/VoidField"), { ssr: false });
 
 export default function RootLayout({
   children,
@@ -106,6 +109,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-void text-text-primary font-sans antialiased overflow-x-hidden min-h-screen relative" suppressHydrationWarning>
+        <VoidField />
         <CustomCursor />
         <SmoothScroll>{children}</SmoothScroll>
         <FloatingWhatsApp />

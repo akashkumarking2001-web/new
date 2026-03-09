@@ -74,6 +74,7 @@ export default function Hero3D() {
     return (
         <div ref={containerRef} className="w-full relative h-[350px] sm:h-[450px] lg:h-[600px]" style={{ background: "transparent" }}>
             <Canvas
+                frameloop={isInView ? "always" : "never"}
                 camera={{ position: [0, 0, 8], fov: 50 }}
                 dpr={[1, 1.5]}
                 gl={{
@@ -87,34 +88,32 @@ export default function Hero3D() {
                     gl.setClearColor(0x000000, 0);
                 }}
             >
-                {isInView && (
-                    <>
-                        <WebGLContextCleaner />
-                        <ambientLight intensity={0.5} />
-                        <pointLight position={[10, 10, 10]} intensity={1} />
+                <WebGLContextCleaner />
+                <ambientLight intensity={0.5} />
+                <pointLight position={[10, 10, 10]} intensity={1} />
 
-                        <group>
-                            <LightNeonBox />
-                            <ChromaKeyVideo
-                                url="/videos/heart.mp4"
-                                scale={1.35}
-                                similarity={0.02}
-                                smoothness={0.06}
-                            />
-                        </group>
+                <group>
+                    <LightNeonBox />
+                    {isInView && (
+                        <ChromaKeyVideo
+                            url="/videos/heart.mp4"
+                            scale={1.35}
+                            similarity={0.02}
+                            smoothness={0.06}
+                        />
+                    )}
+                </group>
 
-                        <OrbitRings />
+                <OrbitRings />
 
-                        <EffectComposer multisampling={0}>
-                            <Bloom luminanceThreshold={0.2} intensity={1.8} />
-                            <ChromaticAberration
-                                radialModulation={false}
-                                modulationOffset={0}
-                                offset={[0.002, 0.002] as any}
-                            />
-                        </EffectComposer>
-                    </>
-                )}
+                <EffectComposer multisampling={0}>
+                    <Bloom luminanceThreshold={0.2} intensity={1.8} />
+                    <ChromaticAberration
+                        radialModulation={false}
+                        modulationOffset={0}
+                        offset={[0.002, 0.002] as any}
+                    />
+                </EffectComposer>
             </Canvas>
         </div>
     );

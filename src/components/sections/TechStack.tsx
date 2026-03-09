@@ -208,8 +208,11 @@ function TechContent() {
     );
 }
 
+import { useInView } from "framer-motion";
+
 export default function TechStack() {
     const containerRef = useRef<HTMLDivElement>(null);
+    const isInView = useInView(containerRef, { margin: "200px" });
 
     return (
         <section ref={containerRef} className="pt-0 lg:pt-16 pb-16 relative z-10 w-full overflow-hidden bg-void" id="tech">
@@ -231,6 +234,7 @@ export default function TechStack() {
 
             <div className="w-full h-[750px] relative z-10 cursor-crosshair">
                 <Canvas
+                    frameloop={isInView ? "always" : "never"}
                     camera={{ position: [0, 0, 15], fov: 45 }}
                     dpr={1}
                     gl={{

@@ -70,12 +70,10 @@ export default function AboutVision() {
 
             {/* 3D Background */}
             <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-60">
-                {isInView && (
-                    <Canvas camera={{ position: [0, 0, 5], fov: 45 }} dpr={1} gl={{ antialias: false, powerPreference: "default", failIfMajorPerformanceCaveat: false }}>
-                        <WebGLContextCleaner />
-                        <AbstractSphere />
-                    </Canvas>
-                )}
+                <Canvas frameloop={isInView ? 'always' : 'never'} camera={{ position: [0, 0, 5], fov: 45 }} dpr={1} gl={{ antialias: false, powerPreference: "default", failIfMajorPerformanceCaveat: false }}>
+                    <WebGLContextCleaner />
+                    <AbstractSphere />
+                </Canvas>
             </div>
 
             <div className="max-w-[1200px] mx-auto px-[max(24px,4vw)] relative z-20">
